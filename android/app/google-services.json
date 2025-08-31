@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "452215614779",
+    "project_id": "ustoz-ai-task",
+    "storage_bucket": "ustoz-ai-task.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:452215614779:android:21933b60ae793159ed1b1e",
+        "android_client_info": {
+          "package_name": "com.example.ustoz_ai_task"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "452215614779-r0gog98uge8sndd6q60e66k182u3chv9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ustoz_ai_task",
+            "certificate_hash": "e5636a4bc170c166431bbd5db1225fa9703bc98e"
+          }
+        },
+        {
+          "client_id": "452215614779-hu72obqeuuqu9ngmv7ige11c5338hiek.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyE0EDtMfrYUMCfvz0X6m6x8nLcLi1gTM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "452215614779-hu72obqeuuqu9ngmv7ige11c5338hiek.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "452215614779-o6fkbmq74d6bmdvdntjm73b076bngbtr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ustozAiTask"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

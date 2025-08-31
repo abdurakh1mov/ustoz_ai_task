@@ -22,8 +22,30 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-    "welcome": MessageLookupByLibrary.simpleMessage(
-      "Добро пожаловать в приложение",
+    "continue_with_google": MessageLookupByLibrary.simpleMessage(
+      "Google bilan davom eting",
     ),
+    "email": MessageLookupByLibrary.simpleMessage("Elektron pochta"),
+    "enter_email": MessageLookupByLibrary.simpleMessage(
+      "Iltimos, elektron pochtangizni kiriting",
+    ),
+    "enter_password": MessageLookupByLibrary.simpleMessage(
+      "Iltimos, parolingizni kiriting",
+    ),
+    "enter_valid_email": MessageLookupByLibrary.simpleMessage("Iltimos, haq"),
+    "forgot_password": MessageLookupByLibrary.simpleMessage(
+      "Parolni unutdingizmi?",
+    ),
+    "have_account": MessageLookupByLibrary.simpleMessage("Accountingiz bormi?"),
+    "login": MessageLookupByLibrary.simpleMessage("Kirish"),
+    "no_account": MessageLookupByLibrary.simpleMessage("Hisobingiz yo\'qmi? "),
+    "password": MessageLookupByLibrary.simpleMessage("Parol"),
+    "password_length": MessageLookupByLibrary.simpleMessage(
+      "Parol kamida 6 ta belgidan iborat bo\'lishi kerak",
+    ),
+    "reset_password": MessageLookupByLibrary.simpleMessage("Parolni tiklash"),
+    "send": MessageLookupByLibrary.simpleMessage("Yuborish"),
+    "sign_up": MessageLookupByLibrary.simpleMessage("Ro\'yxatdan o\'tish"),
+    "welcome": MessageLookupByLibrary.simpleMessage("Xush kelibsiz ilovaga"),
   };
 }

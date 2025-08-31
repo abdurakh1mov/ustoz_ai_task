@@ -22,6 +22,34 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "continue_with_google": MessageLookupByLibrary.simpleMessage(
+      "Continue with Google",
+    ),
+    "email": MessageLookupByLibrary.simpleMessage("Email"),
+    "enter_email": MessageLookupByLibrary.simpleMessage(
+      "Please enter your email",
+    ),
+    "enter_password": MessageLookupByLibrary.simpleMessage(
+      "Please enter your password",
+    ),
+    "enter_valid_email": MessageLookupByLibrary.simpleMessage(
+      "Please enter a valid email",
+    ),
+    "forgot_password": MessageLookupByLibrary.simpleMessage("Forgot Password?"),
+    "have_account": MessageLookupByLibrary.simpleMessage(
+      "Already have an account? ",
+    ),
+    "login": MessageLookupByLibrary.simpleMessage("Login"),
+    "no_account": MessageLookupByLibrary.simpleMessage(
+      "Don\'t have an account? ",
+    ),
+    "password": MessageLookupByLibrary.simpleMessage("Password"),
+    "password_length": MessageLookupByLibrary.simpleMessage(
+      "Password must be at least 6 characters",
+    ),
+    "reset_password": MessageLookupByLibrary.simpleMessage("Reset Password"),
+    "send": MessageLookupByLibrary.simpleMessage("Send"),
+    "sign_up": MessageLookupByLibrary.simpleMessage("Sign Up"),
     "welcome": MessageLookupByLibrary.simpleMessage("Welcome to App"),
   };
 }

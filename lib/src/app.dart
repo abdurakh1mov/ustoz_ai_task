@@ -9,6 +9,9 @@ import 'package:ustoz_ai_task/src/core/theme/app_typography.dart';
 
 import '../generated/l10n.dart';
 
+final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
+    GlobalKey<ScaffoldMessengerState>();
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -23,14 +26,15 @@ class _MyAppState extends State<MyApp> {
     GlobalCupertinoLocalizations.delegate,
     S.delegate,
   ];
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
+      useInheritedMediaQuery: true,
       designSize: const Size(375, 812),
-      minTextAdapt: true,
-      splitScreenMode: true,
       builder: (context, child) {
         return MaterialApp.router(
+          scaffoldMessengerKey: rootScaffoldMessengerKey,
           builder: _applyMediaQuery,
           debugShowCheckedModeBanner: false,
           routerConfig: AppRouter.appRouter,

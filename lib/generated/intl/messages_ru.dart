@@ -22,6 +22,30 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "continue_with_google": MessageLookupByLibrary.simpleMessage(
+      "Продолжить с Google",
+    ),
+    "email": MessageLookupByLibrary.simpleMessage("Электронная почта"),
+    "enter_email": MessageLookupByLibrary.simpleMessage(
+      "Пожалуйста, введите вашу электронную почту",
+    ),
+    "enter_password": MessageLookupByLibrary.simpleMessage(
+      "Пожалуйста, введите ваш пароль",
+    ),
+    "enter_valid_email": MessageLookupByLibrary.simpleMessage(
+      "Пожалуйста, введите действительный адрес электронной почты",
+    ),
+    "forgot_password": MessageLookupByLibrary.simpleMessage("Забыли пароль?"),
+    "have_account": MessageLookupByLibrary.simpleMessage("Уже есть аккаунт?"),
+    "login": MessageLookupByLibrary.simpleMessage("Войти"),
+    "no_account": MessageLookupByLibrary.simpleMessage("Нет аккаунта?"),
+    "password": MessageLookupByLibrary.simpleMessage("Пароль"),
+    "password_length": MessageLookupByLibrary.simpleMessage(
+      "Пароль должен быть не менее 6 символов",
+    ),
+    "reset_password": MessageLookupByLibrary.simpleMessage("Сбросить пароль"),
+    "send": MessageLookupByLibrary.simpleMessage("Отправить"),
+    "sign_up": MessageLookupByLibrary.simpleMessage("Регистрация"),
     "welcome": MessageLookupByLibrary.simpleMessage(
       "Добро пожаловать в приложение",
     ),

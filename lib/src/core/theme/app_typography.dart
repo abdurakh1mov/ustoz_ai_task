@@ -41,7 +41,7 @@ class AppTextStyles extends ThemeExtension<AppTextStyles> {
   final TextStyle w300f14;
 
   static const _fontFamilyManrope = "Manrope";
-  static const Color _black = Color(0xff171717);
+  static const Color _white = Color(0xffffffff);
 
   static AppTextStyles light = AppTextStyles(
     /// fontWeight-900,fontSize-16
@@ -49,7 +49,7 @@ class AppTextStyles extends ThemeExtension<AppTextStyles> {
       fontWeight: FontWeight.w900,
       fontFamily: _fontFamilyManrope,
       fontSize: 16.sp,
-      color: _black,
+      color: _white,
       height: 1.5,
     ),
 
@@ -58,7 +58,7 @@ class AppTextStyles extends ThemeExtension<AppTextStyles> {
       fontWeight: FontWeight.w800,
       fontFamily: _fontFamilyManrope,
       fontSize: 24.sp,
-      color: _black,
+      color: _white,
       height: 1.5,
     ),
 
@@ -67,6 +67,7 @@ class AppTextStyles extends ThemeExtension<AppTextStyles> {
       fontWeight: FontWeight.w700,
       fontFamily: _fontFamilyManrope,
       height: 1.5,
+      color: _white,
       fontSize: 24.sp,
     ),
 
@@ -75,7 +76,7 @@ class AppTextStyles extends ThemeExtension<AppTextStyles> {
       fontWeight: FontWeight.w700,
       fontFamily: _fontFamilyManrope,
       fontSize: 20.sp,
-      color: _black,
+      color: _white,
       height: 1.5,
     ),
 
@@ -84,7 +85,7 @@ class AppTextStyles extends ThemeExtension<AppTextStyles> {
       fontWeight: FontWeight.w700,
       fontFamily: _fontFamilyManrope,
       fontSize: 18.sp,
-      color: _black,
+      color: _white,
       height: 1.5,
     ),
 
@@ -94,7 +95,7 @@ class AppTextStyles extends ThemeExtension<AppTextStyles> {
       fontFamily: _fontFamilyManrope,
       height: 1.5,
       fontSize: 16.sp,
-      color: _black,
+      color: _white,
     ),
 
     /// fontWeight-700,fontSize-14
@@ -102,7 +103,7 @@ class AppTextStyles extends ThemeExtension<AppTextStyles> {
       fontWeight: FontWeight.w700,
       fontFamily: _fontFamilyManrope,
       fontSize: 14.sp,
-      color: _black,
+      color: _white,
       height: 1.5,
     ),
 
@@ -111,7 +112,7 @@ class AppTextStyles extends ThemeExtension<AppTextStyles> {
       fontWeight: FontWeight.w600,
       fontFamily: _fontFamilyManrope,
       fontSize: 18.sp,
-      color: _black,
+      color: _white,
       height: 1.5,
     ),
 
@@ -120,7 +121,7 @@ class AppTextStyles extends ThemeExtension<AppTextStyles> {
       fontWeight: FontWeight.w600,
       fontFamily: _fontFamilyManrope,
       fontSize: 16.sp,
-      color: _black,
+      color: _white,
       height: 1.5,
     ),
 
@@ -129,7 +130,7 @@ class AppTextStyles extends ThemeExtension<AppTextStyles> {
       fontWeight: FontWeight.w600,
       fontFamily: _fontFamilyManrope,
       fontSize: 14.sp,
-      color: _black,
+      color: _white,
       height: 1.5,
     ),
 
@@ -138,7 +139,7 @@ class AppTextStyles extends ThemeExtension<AppTextStyles> {
       fontWeight: FontWeight.w600,
       fontFamily: _fontFamilyManrope,
       fontSize: 12.sp,
-      color: _black,
+      color: _white,
       height: 1.5,
     ),
 
@@ -147,7 +148,7 @@ class AppTextStyles extends ThemeExtension<AppTextStyles> {
       fontWeight: FontWeight.w500,
       fontFamily: _fontFamilyManrope,
       fontSize: 16.sp,
-      color: _black,
+      color: _white,
       height: 1.5,
     ),
 
@@ -156,7 +157,7 @@ class AppTextStyles extends ThemeExtension<AppTextStyles> {
       fontWeight: FontWeight.w500,
       fontFamily: _fontFamilyManrope,
       fontSize: 14.sp,
-      color: _black,
+      color: _white,
       height: 1.5,
     ),
 
@@ -165,7 +166,7 @@ class AppTextStyles extends ThemeExtension<AppTextStyles> {
       fontWeight: FontWeight.w500,
       fontFamily: _fontFamilyManrope,
       fontSize: 14.sp,
-      color: _black,
+      color: _white,
       height: 1.5,
     ),
 
@@ -174,7 +175,7 @@ class AppTextStyles extends ThemeExtension<AppTextStyles> {
       fontWeight: FontWeight.w400,
       fontFamily: _fontFamilyManrope,
       fontSize: 14.sp,
-      color: _black,
+      color: _white,
       height: 1.5,
     ),
 
@@ -183,7 +184,7 @@ class AppTextStyles extends ThemeExtension<AppTextStyles> {
       fontWeight: FontWeight.w400,
       fontFamily: _fontFamilyManrope,
       fontSize: 12.sp,
-      color: _black,
+      color: _white,
       height: 1.5,
     ),
 
@@ -192,7 +193,7 @@ class AppTextStyles extends ThemeExtension<AppTextStyles> {
       fontWeight: FontWeight.w300,
       fontFamily: _fontFamilyManrope,
       fontSize: 14.sp,
-      color: _black,
+      color: _white,
       height: 1.5,
     ),
   );
