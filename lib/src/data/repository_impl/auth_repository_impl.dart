@@ -11,8 +11,6 @@ class AuthRepositoryImpl implements AuthRepositoryInterface {
 
   User? get currentUser => _firebaseAuth.currentUser;
 
-  Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
-
   @override
   Future<User?> signInWithEmailAndPassword({
     required String email,
@@ -99,30 +97,14 @@ class AuthRepositoryImpl implements AuthRepositoryInterface {
   }
 
   @override
-  Future<User?> signInWithGoogle() {
-    return GoogleSignInService.signInWithGoogle()
-        .then((userCredential) async {
-          final User? user = userCredential?.user;
-          if (user != null) {
-            final userDoc = FirebaseFirestore.instance
-                .collection('users')
-                .doc(user.uid);
-            final docSnapshot = await userDoc.get();
-            if (!docSnapshot.exists) {
-              await userDoc.set({
-                'uid': user.uid,
-                'name': user.displayName ?? '',
-                'email': user.email ?? '',
-                'photoURL': user.photoURL ?? '',
-                'provider': 'signInWithGoogle',
-                'createdAt': FieldValue.serverTimestamp(),
-              });
-            }
-          }
-        })
-        .catchError((error) {
-          throw Exception('Failed to sign in with Google: $error');
-        });
+  Future<User?> signInWithGoogle() async {
+    try {
+      final UserCredential? userCredential =
+          await GoogleSignInService.signInWithGoogle();
+      return userCredential?.user;
+    } catch (error) {
+      throw Exception('Failed to sign in with Google: $error');
+    }
   }
 }
 

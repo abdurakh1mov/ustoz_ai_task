@@ -6,7 +6,10 @@ import 'package:ustoz_ai_task/src/domain/repository_interface/auth_repository_in
 import 'package:ustoz_ai_task/src/presentation/blocs/login/login_bloc.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/auth/login/login_screen.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/auth/sign_up/sign_up_screen.dart';
+import 'package:ustoz_ai_task/src/presentation/screens/main/home/home_screen.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/main/main_screen.dart';
+import 'package:ustoz_ai_task/src/presentation/screens/main/profile/profile_screen.dart';
+import 'package:ustoz_ai_task/src/presentation/screens/main/statistics/statistics_screen.dart';
 import 'package:ustoz_ai_task/src/splash_screen.dart';
 
 import '../../presentation/blocs/sign_up/sign_up_bloc.dart';
@@ -50,6 +53,29 @@ class AppRouter {
         builder: (context, state) {
           return const MainScreen();
         },
+        routes: [
+          GoRoute(
+            path: RouterNames.home,
+            name: RouterNames.home,
+            builder: (context, state) {
+              return const HomeScreen();
+            },
+          ),
+          GoRoute(
+            path: RouterNames.statistics,
+            name: RouterNames.statistics,
+            builder: (context, state) {
+              return const StatisticsScreen();
+            },
+          ),
+          GoRoute(
+            path: RouterNames.profile,
+            name: RouterNames.profile,
+            builder: (context, state) {
+              return const ProfileScreen();
+            },
+          ),
+        ],
       ),
       GoRoute(
         path: RouterNames.splash,

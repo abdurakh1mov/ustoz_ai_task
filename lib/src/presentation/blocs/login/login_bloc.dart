@@ -51,13 +51,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     try {
       emit(state.copyWith(isLoading: true, errorMessage: ""));
       final response = await _authRepository.signInWithGoogle();
-      emit(state.copyWith(errorMessage: "", isLoading: false));
+      printLog("fsansfkanfkansfkanskf ${response?.uid}");
       DbService().saveAuthenticationStatus(
         (response?.uid != null) ? true : false,
       );
       if (response?.uid != null) {
         DbService().saveUid(response!.uid);
       }
+      emit(state.copyWith(isSuccess: true, errorMessage: "", isLoading: false));
       showAppSnackBar("Successfully logged in!");
     } catch (e) {
       emit(state.copyWith(errorMessage: e.toString(), isLoading: false));

@@ -37,15 +37,18 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "forgot_password": MessageLookupByLibrary.simpleMessage("Забыли пароль?"),
     "have_account": MessageLookupByLibrary.simpleMessage("Уже есть аккаунт?"),
+    "home": MessageLookupByLibrary.simpleMessage("Главная"),
     "login": MessageLookupByLibrary.simpleMessage("Войти"),
     "no_account": MessageLookupByLibrary.simpleMessage("Нет аккаунта?"),
     "password": MessageLookupByLibrary.simpleMessage("Пароль"),
     "password_length": MessageLookupByLibrary.simpleMessage(
       "Пароль должен быть не менее 6 символов",
     ),
+    "profile": MessageLookupByLibrary.simpleMessage("Профиль"),
     "reset_password": MessageLookupByLibrary.simpleMessage("Сбросить пароль"),
     "send": MessageLookupByLibrary.simpleMessage("Отправить"),
     "sign_up": MessageLookupByLibrary.simpleMessage("Регистрация"),
+    "statistics": MessageLookupByLibrary.simpleMessage("Статистика"),
     "welcome": MessageLookupByLibrary.simpleMessage(
       "Добро пожаловать в приложение",
     ),

@@ -29,5 +29,11 @@
     "send": "Yuborish",
     "@send": {},
     "continue_with_google": "Google bilan davom eting",
-    "@continue_with_google": {}
+    "@continue_with_google": {},
+    "home": "Bosh sahifa",
+    "@home": {},
+    "statistics": "Statistika",
+    "@statistics": {},
+    "profile": "Profil",
+    "@profile": {}
 }

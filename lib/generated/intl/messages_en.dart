@@ -39,6 +39,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "have_account": MessageLookupByLibrary.simpleMessage(
       "Already have an account? ",
     ),
+    "home": MessageLookupByLibrary.simpleMessage("Home"),
     "login": MessageLookupByLibrary.simpleMessage("Login"),
     "no_account": MessageLookupByLibrary.simpleMessage(
       "Don\'t have an account? ",
@@ -47,9 +48,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "password_length": MessageLookupByLibrary.simpleMessage(
       "Password must be at least 6 characters",
     ),
+    "profile": MessageLookupByLibrary.simpleMessage("Profile"),
     "reset_password": MessageLookupByLibrary.simpleMessage("Reset Password"),
     "send": MessageLookupByLibrary.simpleMessage("Send"),
     "sign_up": MessageLookupByLibrary.simpleMessage("Sign Up"),
+    "statistics": MessageLookupByLibrary.simpleMessage("Statistics"),
     "welcome": MessageLookupByLibrary.simpleMessage("Welcome to App"),
   };
 }

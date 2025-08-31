@@ -29,5 +29,11 @@
     "send": "Отправить",
     "@send": {},
     "continue_with_google": "Продолжить с Google",
-    "@continue_with_google": {}
+    "@continue_with_google": {},
+    "home": "Главная",
+    "@home": {},
+    "statistics": "Статистика",
+    "@statistics": {},
+    "profile": "Профиль",
+    "@profile": {}
 }

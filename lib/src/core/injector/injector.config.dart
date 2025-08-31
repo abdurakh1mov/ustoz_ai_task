@@ -18,8 +18,6 @@ import 'package:ustoz_ai_task/src/domain/repository_interface/auth_repository_in
     as _i814;
 import 'package:ustoz_ai_task/src/presentation/blocs/login/login_bloc.dart'
     as _i408;
-import 'package:ustoz_ai_task/src/presentation/blocs/sign_up/sign_up_bloc.dart'
-    as _i912;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -30,10 +28,6 @@ extension GetItInjectableX on _i174.GetIt {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     gh.lazySingleton<_i1048.DbService>(() => _i1048.DbService());
     gh.factory<_i814.AuthRepositoryInterface>(() => _i778.AuthRepositoryImpl());
-    gh.factory<_i912.SingUpBloc>(
-      () =>
-          _i912.SingUpBloc(authRepository: gh<_i814.AuthRepositoryInterface>()),
-    );
     gh.factory<_i408.LoginBloc>(
       () =>
           _i408.LoginBloc(authRepository: gh<_i814.AuthRepositoryInterface>()),

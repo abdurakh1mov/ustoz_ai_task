@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:progress_indicators/progress_indicators.dart';
 import 'package:ustoz_ai_task/src/core/theme/app_colors.dart';
 
 // ignore: must_be_immutable

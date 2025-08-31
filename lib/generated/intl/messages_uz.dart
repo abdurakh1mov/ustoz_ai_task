@@ -37,15 +37,18 @@ class MessageLookup extends MessageLookupByLibrary {
       "Parolni unutdingizmi?",
     ),
     "have_account": MessageLookupByLibrary.simpleMessage("Accountingiz bormi?"),
+    "home": MessageLookupByLibrary.simpleMessage("Bosh sahifa"),
     "login": MessageLookupByLibrary.simpleMessage("Kirish"),
     "no_account": MessageLookupByLibrary.simpleMessage("Hisobingiz yo\'qmi? "),
     "password": MessageLookupByLibrary.simpleMessage("Parol"),
     "password_length": MessageLookupByLibrary.simpleMessage(
       "Parol kamida 6 ta belgidan iborat bo\'lishi kerak",
     ),
+    "profile": MessageLookupByLibrary.simpleMessage("Profil"),
     "reset_password": MessageLookupByLibrary.simpleMessage("Parolni tiklash"),
     "send": MessageLookupByLibrary.simpleMessage("Yuborish"),
     "sign_up": MessageLookupByLibrary.simpleMessage("Ro\'yxatdan o\'tish"),
+    "statistics": MessageLookupByLibrary.simpleMessage("Statistika"),
     "welcome": MessageLookupByLibrary.simpleMessage("Xush kelibsiz ilovaga"),
   };
 }

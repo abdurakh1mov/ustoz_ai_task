@@ -29,5 +29,11 @@
     "send": "Send",
     "@send": {},
     "continue_with_google": "Continue with Google",
-    "@continue_with_google": {}
+    "@continue_with_google": {},
+    "home": "Home",
+    "@home": {},
+    "statistics": "Statistics",
+    "@statistics": {},
+    "profile": "Profile",
+    "@profile": {}
 }
