@@ -59,7 +59,6 @@ class _MyAppState extends State<MyApp> {
     extensions: <ThemeExtension<dynamic>>[AppTextStyles.light, AppColors.light],
   );
 
-  /// Fixes system-wide text scaling to ensure consistent UI
   Widget _applyMediaQuery(BuildContext context, Widget? child) {
     final mq = MediaQuery.of(context);
     return MediaQuery(

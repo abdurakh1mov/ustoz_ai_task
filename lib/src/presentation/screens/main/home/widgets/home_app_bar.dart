@@ -27,7 +27,7 @@ class HomeAppBar extends StatelessWidget {
               title: "Доход",
               subtitle: "12 000 000",
               context: context,
-              subtitleColor: context.appColors.silverGray,
+              subtitleColor: context.appColors.softBlue,
             ),
             _build(
               title: "Расход",

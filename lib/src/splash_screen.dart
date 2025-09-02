@@ -16,10 +16,10 @@ class _SplashScreenState extends State<SplashScreen> {
   void didChangeDependencies() {
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted && DbService().getAuthenticationStatus) {
-        context.pushNamed(RouterNames.main);
+        context.pushReplacementNamed(RouterNames.main);
       } else {
         if (mounted) {
-          context.go(RouterNames.login);
+          context.pushReplacementNamed(RouterNames.login);
         }
       }
     });
@@ -29,7 +29,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return const Screen(
-      body: Center(child: CircularProgressIndicator.adaptive()),
+      body: Center(
+        child: CircularProgressIndicator.adaptive(
+          backgroundColor: Colors.white,
+        ),
+      ),
     );
   }
 }

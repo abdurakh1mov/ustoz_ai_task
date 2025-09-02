@@ -6,7 +6,7 @@ import 'package:ustoz_ai_task/src/core/extension/localisation_extension.dart';
 import 'package:ustoz_ai_task/src/core/extension/widget_extension.dart';
 import 'package:ustoz_ai_task/src/core/theme/app_colors.dart';
 import 'package:ustoz_ai_task/src/core/theme/app_typography.dart';
-import 'package:ustoz_ai_task/src/presentation/blocs/sign_up/sign_up_bloc.dart';
+import 'package:ustoz_ai_task/src/presentation/blocs/sign_up/sign_up_cubit.dart';
 import '../../../../component/custom_password_text_field.dart';
 import '../../../../component/custom_text_field.dart';
 import '../../../../component/primary_button.dart';
@@ -52,7 +52,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return BlocListener<SingUpBloc, SignUpState>(
       listener: (context, state) {
         if (state.isSuccess) {
-          context.pushNamed(RouterNames.main);
+          context.pushReplacementNamed(RouterNames.main);
         }
       },
       child: BlocBuilder<SingUpBloc, SignUpState>(
@@ -113,12 +113,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 if (state.isLoading) {
                                   return;
                                 }
-                                context.read<SingUpBloc>().add(
-                                  SignUpEvent.registerWithEmailAndPassword(
-                                    email: _emailController.text,
-                                    password: _passwordController.text,
-                                  ),
-                                );
+                                context
+                                    .read<SingUpBloc>()
+                                    .registerWithEmailAndPassword(
+                                      email: _emailController.text,
+                                      password: _passwordController.text,
+                                    );
                               }
                             },
                           ),

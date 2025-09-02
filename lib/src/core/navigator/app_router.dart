@@ -3,16 +3,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ustoz_ai_task/src/core/navigator/router_names.dart';
 import 'package:ustoz_ai_task/src/domain/repository_interface/auth_repository_interface.dart';
+import 'package:ustoz_ai_task/src/domain/repository_interface/main_repository_interface.dart';
 import 'package:ustoz_ai_task/src/presentation/blocs/login/login_bloc.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/auth/login/login_screen.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/auth/sign_up/sign_up_screen.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/main/home/home_screen.dart';
+import 'package:ustoz_ai_task/src/presentation/screens/main/create_transaction/create_transaction.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/main/main_screen.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/main/profile/profile_screen.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/main/statistics/statistics_screen.dart';
 import 'package:ustoz_ai_task/src/splash_screen.dart';
 
-import '../../presentation/blocs/sign_up/sign_up_bloc.dart';
+import '../../data/model/category_model.dart';
+import '../../presentation/blocs/main/main_bloc.dart';
+import '../../presentation/blocs/sign_up/sign_up_cubit.dart';
 import '../injector/injector.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -51,7 +55,15 @@ class AppRouter {
         path: RouterNames.main,
         name: RouterNames.main,
         builder: (context, state) {
-          return const MainScreen();
+          return BlocProvider(
+            create: (context) {
+              final bloc = MainBloc(
+                repository: getIt<MainRepositoryInterface>(),
+              )..add(const MainEvent.fetchCategories());
+              return bloc;
+            },
+            child: const MainScreen(),
+          );
         },
         routes: [
           GoRoute(
@@ -73,6 +85,15 @@ class AppRouter {
             name: RouterNames.profile,
             builder: (context, state) {
               return const ProfileScreen();
+            },
+          ),
+          GoRoute(
+            path: RouterNames.createTransaction,
+            name: RouterNames.createTransaction,
+            builder: (context, state) {
+              List<CategoryModel>? categories =
+                  state.extra as List<CategoryModel>?;
+              return CreateTransaction(categories: categories);
             },
           ),
         ],

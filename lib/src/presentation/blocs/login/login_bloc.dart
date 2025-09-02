@@ -7,28 +7,24 @@ import 'package:ustoz_ai_task/src/core/injector/injector.dart';
 import 'package:ustoz_ai_task/src/domain/repository_interface/auth_repository_interface.dart';
 
 part 'login_state.dart';
-part 'login_event.dart';
 part 'login_bloc.freezed.dart';
 
 @injectable
-class LoginBloc extends Bloc<LoginEvent, LoginState> {
+class LoginBloc extends Cubit<LoginState> {
   final AuthRepositoryInterface _authRepository;
   LoginBloc({required AuthRepositoryInterface authRepository})
     : _authRepository = authRepository,
-      super(const _LoginState()) {
-    on<_SignInWithEmailAndPassword>(_signInWithEmailAndPassword);
-    on<_SignInWithGoogle>(_signInWithGoogle);
-  }
+      super(const _LoginState());
 
-  Future<void> _signInWithEmailAndPassword(
-    _SignInWithEmailAndPassword event,
-    Emitter<LoginState> emit,
-  ) async {
+  Future<void> signInWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
     emit(state.copyWith(isLoading: true));
     try {
       final response = await _authRepository.signInWithEmailAndPassword(
-        email: event.email,
-        password: event.password,
+        email: email,
+        password: password,
       );
       DbService().saveAuthenticationStatus(
         (response?.uid != null) ? true : false,
@@ -44,14 +40,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  Future<void> _signInWithGoogle(
-    _SignInWithGoogle event,
-    Emitter<LoginState> emit,
-  ) async {
+  Future<void> signInWithGoogle() async {
     try {
       emit(state.copyWith(isLoading: true, errorMessage: ""));
       final response = await _authRepository.signInWithGoogle();
-      printLog("fsansfkanfkansfkanskf ${response?.uid}");
       DbService().saveAuthenticationStatus(
         (response?.uid != null) ? true : false,
       );

@@ -6,4 +6,5 @@ class RouterNames {
   static const String home = '/home';
   static const String statistics = '/statistics';
   static const String profile = '/profile';
+  static const String createTransaction = '/create_transaction';
 }

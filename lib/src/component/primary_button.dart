@@ -9,22 +9,24 @@ class PrimaryButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     this.isDisabled = false,
-    required this.title,
+    this.title,
     this.titleColor = const Color(0xffFFFFFF),
     this.backgroundColor = const Color(0xff1D1D1D),
     this.borderWidth = 0.5,
     this.verticalPadding = 12,
     this.isLoading,
+    this.icon,
   });
 
   final VoidCallback onPressed;
   final Color? backgroundColor;
-  final String title;
+  final String? title;
   final Color titleColor;
   final bool isDisabled;
   final double borderWidth;
   final double verticalPadding;
   final bool? isLoading;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -54,14 +56,16 @@ class PrimaryButton extends StatelessWidget {
             vertical: verticalPadding.h,
             horizontal: 8.w,
           ),
-          child: Text(
-            (isLoading ?? false) ? "" : title,
-            textAlign: TextAlign.center,
-            style: context.textStyles.w700f16.copyWith(
-              color: isDisabled ? color.gray : color.white,
-            ),
-            maxLines: 1,
-          ),
+          child: title == null
+              ? Icon(icon)
+              : Text(
+                  (isLoading ?? false) ? "" : (title ?? ''),
+                  textAlign: TextAlign.center,
+                  style: context.textStyles.w700f16.copyWith(
+                    color: isDisabled ? color.gray : color.white,
+                  ),
+                  maxLines: 1,
+                ),
         ),
       ),
     );

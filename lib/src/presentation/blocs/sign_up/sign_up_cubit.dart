@@ -7,27 +7,24 @@ import 'package:ustoz_ai_task/src/domain/repository_interface/auth_repository_in
 import '../../../core/cache/db_service.dart';
 
 part 'sign_up_state.dart';
-part 'sign_up_event.dart';
-part 'sign_up_bloc.freezed.dart';
+part 'sign_up_cubit.freezed.dart';
 
 @injectable
-class SingUpBloc extends Bloc<SignUpEvent, SignUpState> {
+class SingUpBloc extends Cubit<SignUpState> {
   final AuthRepositoryInterface _authRepository;
   SingUpBloc({required AuthRepositoryInterface authRepository})
     : _authRepository = authRepository,
-      super(const _SignUpState()) {
-    on<_RegisterWithEmailAndPassword>(_registerWithEmailAndPassword);
-  }
+      super(const _SignUpState());
 
-  Future<void> _registerWithEmailAndPassword(
-    _RegisterWithEmailAndPassword event,
-    Emitter<SignUpState> emit,
-  ) async {
+  Future<void> registerWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
     emit(state.copyWith(isLoading: true, errorMessage: ""));
     try {
       final response = await _authRepository.registerWithEmailAndPassword(
-        event.email,
-        event.password,
+        email,
+        password,
       );
       showAppSnackBar("Successfully registered!");
       DbService().saveAuthenticationStatus(

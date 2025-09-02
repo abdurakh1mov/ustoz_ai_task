@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state.isSuccess) {
-          context.pushNamed(RouterNames.main);
+          context.pushReplacementNamed(RouterNames.main);
         }
       },
       child: Screen(
@@ -110,12 +110,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 if (state.isLoading) {
                                   return;
                                 }
-                                context.read<LoginBloc>().add(
-                                  LoginEvent.signInWithEmailAndPassword(
-                                    email: _emailController.text,
-                                    password: _passwordController.text,
-                                  ),
-                                );
+                                context
+                                    .read<LoginBloc>()
+                                    .signInWithEmailAndPassword(
+                                      email: _emailController.text,
+                                      password: _passwordController.text,
+                                    );
                               }
                             },
                           ),
@@ -155,11 +155,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                       if (state.isLoading) {
                                         return;
                                       }
-                                      context.read<LoginBloc>().add(
-                                        LoginEvent.signInWithGoogle(
-                                          context: context,
-                                        ),
-                                      );
+                                      context
+                                          .read<LoginBloc>()
+                                          .signInWithGoogle();
                                     },
                                     customBorder: CircleBorder(),
                                     child: Padding(
