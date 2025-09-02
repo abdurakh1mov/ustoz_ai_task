@@ -20,6 +20,8 @@ import 'package:ustoz_ai_task/src/domain/repository_interface/auth_repository_in
     as _i814;
 import 'package:ustoz_ai_task/src/domain/repository_interface/main_repository_interface.dart'
     as _i343;
+import 'package:ustoz_ai_task/src/presentation/blocs/create_transaction/create_transaction_bloc.dart'
+    as _i953;
 import 'package:ustoz_ai_task/src/presentation/blocs/login/login_bloc.dart'
     as _i408;
 import 'package:ustoz_ai_task/src/presentation/blocs/main/main_bloc.dart'
@@ -47,6 +49,11 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i864.MainBloc>(
       () => _i864.MainBloc(repository: gh<_i343.MainRepositoryInterface>()),
+    );
+    gh.factory<_i953.CreateTransactionBloc>(
+      () => _i953.CreateTransactionBloc(
+        repository: gh<_i343.MainRepositoryInterface>(),
+      ),
     );
     return this;
   }

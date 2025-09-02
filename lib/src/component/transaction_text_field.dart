@@ -30,6 +30,7 @@ class _TransactionTextFieldState extends State<TransactionTextField> {
       controller: widget.controller,
       keyboardType: widget.inputType ?? TextInputType.number,
       style: textStyles.w500f12,
+      autocorrect: false,
       onChanged: widget.onChanged,
       decoration: InputDecoration(
         border: OutlineInputBorder(

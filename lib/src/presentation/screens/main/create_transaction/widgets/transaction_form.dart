@@ -1,4 +1,6 @@
+import 'package:container_tab_indicator/container_tab_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:ustoz_ai_task/src/core/extension/widget_extension.dart';
@@ -6,26 +8,50 @@ import 'package:ustoz_ai_task/src/core/injector/injector.dart';
 import 'package:ustoz_ai_task/src/core/theme/app_colors.dart';
 import 'package:ustoz_ai_task/src/core/theme/app_typography.dart';
 import 'package:ustoz_ai_task/src/core/utils/formatters.dart';
-import 'package:ustoz_ai_task/src/data/model/category_model.dart';
+import 'package:ustoz_ai_task/src/presentation/blocs/create_transaction/create_transaction_bloc.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/main/create_transaction/widgets/category_bottom_sheet.dart';
 
 import '../../../../../component/category_with_border.dart';
 import '../../../../../component/transaction_text_field.dart';
 
 class TransactionForm extends StatefulWidget {
-  const TransactionForm({super.key, required this.categories});
-  final List<CategoryModel>? categories;
+  const TransactionForm({super.key, required this.onTabChanged});
+  final void Function(int index) onTabChanged;
   @override
-  State<TransactionForm> createState() => _TransactionFormState();
+  State<TransactionForm> createState() => TransactionFormState();
 }
 
-class _TransactionFormState extends State<TransactionForm> {
+class TransactionFormState extends State<TransactionForm>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() {
+      setState(() {
+        selectedCategory = "Select category";
+      });
+    });
+    super.initState();
+  }
+
   bool isUsd = false;
   DateTime selectedDate = DateTime.now();
   late CurrencyDetectorFormatter _formatter;
-  String category = "Select category";
+  String selectedCategory = "Select category";
   final TextEditingController noteController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
+
+  Map<String, dynamic> getFormData() {
+    return {
+      "isUsd": isUsd,
+      "note": noteController.text,
+      "amount": amountController.text,
+      "date": selectedDate,
+      "category": selectedCategory,
+    };
+  }
 
   @override
   void didChangeDependencies() {
@@ -48,83 +74,118 @@ class _TransactionFormState extends State<TransactionForm> {
   @override
   Widget build(BuildContext context) {
     final textStyles = context.textStyles;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    final appColors = context.appColors;
+    return BlocBuilder<CreateTransactionBloc, CreateTransactionState>(
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Amount", style: textStyles.w600f14),
-            Row(
-              children: [
-                SizedBox(
-                  width: 20.w,
-                  height: 20.h,
-                  child: Switch(
-                    activeThumbColor: context.appColors.softBlue,
-                    activeTrackColor: context.appColors.white,
-                    inactiveThumbColor: context.appColors.silverGray,
-                    inactiveTrackColor: context.appColors.white,
-                    trackOutlineColor: WidgetStateProperty.all(
-                      context.appColors.white,
-                    ),
-                    value: isUsd,
-                    onChanged: (newValue) {
-                      _toggleCurrency(newValue);
-                    },
-                  ),
+            Container(
+              height: 40.h,
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(4.r),
+                border: Border.all(
+                  color: appColors.white.withValues(alpha: 0.2),
                 ),
-                20.w.horizontalSpace,
-                Text("USD", style: textStyles.w500f12),
+              ),
+              child: TabBar(
+                tabAlignment: TabAlignment.fill,
+                controller: _tabController,
+                dividerColor: Colors.transparent,
+                tabs: [
+                  Text("Income", style: textStyles.w600f12),
+                  Text('Expense', style: textStyles.w600f12),
+                ],
+                indicator: ContainerTabIndicator(
+                  width: (1.sw / 2),
+                  height: 32.h,
+                  padding: EdgeInsets.only(left: 12.w, right: 12.w),
+                  borderWidth: 1,
+                  borderColor: appColors.white,
+                  radius: BorderRadius.circular(4.r),
+                ),
+              ),
+            ),
+            20.h.verticalSpace,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Amount", style: textStyles.w600f14),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 20.w,
+                      height: 20.h,
+                      child: Switch(
+                        activeThumbColor: context.appColors.softBlue,
+                        activeTrackColor: context.appColors.white,
+                        inactiveThumbColor: context.appColors.silverGray,
+                        inactiveTrackColor: context.appColors.white,
+                        trackOutlineColor: WidgetStateProperty.all(
+                          context.appColors.white,
+                        ),
+                        value: isUsd,
+                        onChanged: (newValue) {
+                          _toggleCurrency(newValue);
+                        },
+                      ),
+                    ),
+                    20.w.horizontalSpace,
+                    Text("USD", style: textStyles.w500f12),
+                  ],
+                ),
               ],
             ),
-          ],
-        ),
-        8.h.verticalSpace,
-        TransactionTextField(
-          onChanged: (value) {},
-          formatter: [_formatter],
-          controller: amountController,
-        ),
-        12.h.verticalSpace,
-        Text("Category", style: textStyles.w600f14),
-        8.h.verticalSpace,
-        CategoryWithBorder(
-          title: category,
-          onTap: () {
-            showModalBottomSheet(
-              context: context,
-              constraints: BoxConstraints(maxHeight: 0.6.sh),
-              builder: (contextBottomSheet) {
-                return CategoryBottomSheet(
-                  categories: widget.categories ?? [],
-                  onTap: (category) {
-                    setState(() {
-                      this.category = category;
-                    });
+            8.h.verticalSpace,
+            TransactionTextField(
+              onChanged: (value) {},
+              formatter: [_formatter],
+              controller: amountController,
+            ),
+            12.h.verticalSpace,
+            Text("Category", style: textStyles.w600f14),
+            8.h.verticalSpace,
+            CategoryWithBorder(
+              title: selectedCategory,
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  constraints: BoxConstraints(maxHeight: 0.6.sh),
+                  builder: (contextBottomSheet) {
+                    return CategoryBottomSheet(
+                      categories: _tabController.index == 0
+                          ? state.categoriesIncome
+                          : state.categories,
+                      onTap: (category) {
+                        setState(() {
+                          selectedCategory = category;
+                        });
+                      },
+                    );
                   },
                 );
               },
-            );
-          },
-        ),
-        12.h.verticalSpace,
-        Text("Note", style: textStyles.w600f14),
-        8.h.verticalSpace,
-        TransactionTextField(
-          controller: noteController,
-          onChanged: (value) {},
-          inputType: TextInputType.text,
-        ),
-        12.h.verticalSpace,
-        Text("Date", style: textStyles.w600f14),
-        8.h.verticalSpace,
-        CategoryWithBorder(
-          title: DateFormat("d MMMM yyyy").format(selectedDate),
-          onTap: () => _pickDate(context),
-        ),
-      ],
-    ).padding(EdgeInsets.symmetric(horizontal: 16.w));
+            ),
+            12.h.verticalSpace,
+            Text("Note", style: textStyles.w600f14),
+            8.h.verticalSpace,
+            TransactionTextField(
+              controller: noteController,
+              onChanged: (value) {},
+              inputType: TextInputType.text,
+            ),
+            12.h.verticalSpace,
+            Text("Date", style: textStyles.w600f14),
+            8.h.verticalSpace,
+            CategoryWithBorder(
+              title: DateFormat("d MMMM yyyy").format(selectedDate),
+              onTap: () => _pickDate(context),
+            ),
+          ],
+        ).padding(EdgeInsets.symmetric(horizontal: 16.w));
+      },
+    );
   }
 
   Future<void> _pickDate(BuildContext context) async {
