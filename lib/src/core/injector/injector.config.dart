@@ -22,10 +22,10 @@ import 'package:ustoz_ai_task/src/domain/repository_interface/main_repository_in
     as _i343;
 import 'package:ustoz_ai_task/src/presentation/blocs/create_transaction/create_transaction_bloc.dart'
     as _i953;
-import 'package:ustoz_ai_task/src/presentation/blocs/login/login_bloc.dart'
-    as _i408;
-import 'package:ustoz_ai_task/src/presentation/blocs/main/main_bloc.dart'
-    as _i864;
+import 'package:ustoz_ai_task/src/presentation/blocs/home/home_cubit.dart'
+    as _i712;
+import 'package:ustoz_ai_task/src/presentation/blocs/login/login_cubit.dart'
+    as _i655;
 import 'package:ustoz_ai_task/src/presentation/blocs/sign_up/sign_up_cubit.dart'
     as _i372;
 
@@ -39,16 +39,16 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1048.DbService>(() => _i1048.DbService());
     gh.factory<_i343.MainRepositoryInterface>(() => _i335.MainRepositoryImpl());
     gh.factory<_i814.AuthRepositoryInterface>(() => _i778.AuthRepositoryImpl());
-    gh.factory<_i408.LoginBloc>(
-      () =>
-          _i408.LoginBloc(authRepository: gh<_i814.AuthRepositoryInterface>()),
-    );
     gh.factory<_i372.SingUpBloc>(
       () =>
           _i372.SingUpBloc(authRepository: gh<_i814.AuthRepositoryInterface>()),
     );
-    gh.factory<_i864.MainBloc>(
-      () => _i864.MainBloc(repository: gh<_i343.MainRepositoryInterface>()),
+    gh.factory<_i655.LoginCubit>(
+      () =>
+          _i655.LoginCubit(authRepository: gh<_i814.AuthRepositoryInterface>()),
+    );
+    gh.factory<_i712.HomeCubit>(
+      () => _i712.HomeCubit(repository: gh<_i343.MainRepositoryInterface>()),
     );
     gh.factory<_i953.CreateTransactionBloc>(
       () => _i953.CreateTransactionBloc(

@@ -5,7 +5,7 @@ import 'package:ustoz_ai_task/src/core/navigator/router_names.dart';
 import 'package:ustoz_ai_task/src/domain/repository_interface/auth_repository_interface.dart';
 import 'package:ustoz_ai_task/src/domain/repository_interface/main_repository_interface.dart';
 import 'package:ustoz_ai_task/src/presentation/blocs/create_transaction/create_transaction_bloc.dart';
-import 'package:ustoz_ai_task/src/presentation/blocs/login/login_bloc.dart';
+import 'package:ustoz_ai_task/src/presentation/blocs/login/login_cubit.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/auth/login/login_screen.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/auth/sign_up/sign_up_screen.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/main/home/home_screen.dart';
@@ -14,7 +14,6 @@ import 'package:ustoz_ai_task/src/presentation/screens/main/main_screen.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/main/profile/profile_screen.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/main/statistics/statistics_screen.dart';
 import 'package:ustoz_ai_task/src/splash_screen.dart';
-import '../../presentation/blocs/main/main_bloc.dart';
 import '../../presentation/blocs/sign_up/sign_up_cubit.dart';
 import '../injector/injector.dart';
 
@@ -31,7 +30,7 @@ class AppRouter {
         builder: (context, state) {
           return BlocProvider(
             create: (context) =>
-                LoginBloc(authRepository: getIt<AuthRepositoryInterface>()),
+                LoginCubit(authRepository: getIt<AuthRepositoryInterface>()),
             child: LoginScreen(),
           );
         },
@@ -54,15 +53,7 @@ class AppRouter {
         path: RouterNames.main,
         name: RouterNames.main,
         builder: (context, state) {
-          return BlocProvider(
-            create: (context) {
-              final bloc = MainBloc(
-                repository: getIt<MainRepositoryInterface>(),
-              );
-              return bloc;
-            },
-            child: const MainScreen(),
-          );
+          return MainScreen();
         },
         routes: [
           GoRoute(

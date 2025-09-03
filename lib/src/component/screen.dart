@@ -3,11 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:ustoz_ai_task/src/core/theme/app_colors.dart';
 
 class Screen extends StatelessWidget {
-  const Screen({super.key, required this.body});
+  const Screen({super.key, required this.body, this.scaffoldKey});
   final Widget body;
+  final GlobalKey<ScaffoldState>? scaffoldKey;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       extendBody: true,
       appBar: AppBar(
         elevation: 0,

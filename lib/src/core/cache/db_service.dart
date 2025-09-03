@@ -32,7 +32,7 @@ class DbService {
     await _box.put(_uuid, uid);
   }
 
-  String? get getSessionId {
+  String? get uid {
     return _box.get(_uuid);
   }
 

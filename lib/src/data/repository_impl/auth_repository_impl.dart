@@ -141,6 +141,8 @@ class GoogleSignInService {
         final docSnapshot = await userDoc.get();
         if (!docSnapshot.exists) {
           await userDoc.set({
+            'income': 0,
+            'expense': 0,
             'uid': user.uid,
             'name': user.displayName ?? '',
             'email': user.email ?? '',

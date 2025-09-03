@@ -15,7 +15,6 @@ class CurrencyDetectorFormatter extends TextInputFormatter {
   ) {
     final currency = isUsd ? "USD" : "UZS";
 
-    // remove suffix if user typed
     String raw = newValue.text
         .replaceAll(RegExp(r'(USD|UZS)', caseSensitive: false), "")
         .replaceAll(",", "")
@@ -28,16 +27,12 @@ class CurrencyDetectorFormatter extends TextInputFormatter {
       );
     }
 
-    // only allow digits
     final digits = raw.replaceAll(RegExp(r'[^0-9]'), "");
 
-    // format with thousand separator
     final formatted = _formatter.format(int.parse(digits));
 
-    // add suffix
     final newText = "$formatted $currency";
 
-    // put cursor before suffix
     final cursorPos = formatted.length;
 
     return TextEditingValue(
@@ -47,3 +42,23 @@ class CurrencyDetectorFormatter extends TextInputFormatter {
   }
 }
 
+String formatToKMLN(int value) {
+  var newValue = "";
+  final originalValue = value;
+  if (value < 0) {
+    value = value * -1;
+  }
+  if (value >= 1000000000) {
+    newValue = "${(value / 1000000000).toStringAsFixed(1)} mlrd";
+  } else if (value >= 1000000) {
+    newValue = "${(value / 1000000).toStringAsFixed(1)} mln";
+  } else if (value >= 1000) {
+    newValue = "${(value / 1000).toStringAsFixed(1)} k";
+  } else {
+    newValue = value.toStringAsFixed(0);
+  }
+  if (originalValue < 0) {
+    newValue = "-$newValue";
+  }
+  return newValue;
+}

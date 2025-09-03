@@ -13,7 +13,7 @@ import '../../../../component/primary_button.dart';
 import '../../../../component/screen.dart';
 import '../../../../core/navigator/router_names.dart';
 import '../../../../core/utils/decoration_helper.dart';
-import '../../../blocs/login/login_bloc.dart';
+import '../../../blocs/login/login_cubit.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -51,14 +51,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginBloc, LoginState>(
+    return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
         if (state.isSuccess) {
           context.pushReplacementNamed(RouterNames.main);
         }
       },
       child: Screen(
-        body: BlocBuilder<LoginBloc, LoginState>(
+        body: BlocBuilder<LoginCubit, LoginState>(
           builder: (context, state) {
             return Container(
               padding: EdgeInsets.only(left: 16, right: 16, top: 16),
@@ -111,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   return;
                                 }
                                 context
-                                    .read<LoginBloc>()
+                                    .read<LoginCubit>()
                                     .signInWithEmailAndPassword(
                                       email: _emailController.text,
                                       password: _passwordController.text,
@@ -156,7 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         return;
                                       }
                                       context
-                                          .read<LoginBloc>()
+                                          .read<LoginCubit>()
                                           .signInWithGoogle();
                                     },
                                     customBorder: CircleBorder(),

@@ -13,6 +13,13 @@ abstract class CreateTransactionEvent with _$CreateTransactionEvent {
   }) = _CreateTransactionEvent;
 
   const factory CreateTransactionEvent.fetchCategories() = _FetchCategories;
+  const factory CreateTransactionEvent.changeOverallSums({
+    required bool isIncome,
+    required int amount,
+    required int incomes,
+    required int expenses,
+    required bool isUsd,
+  }) = _ChangeOverallSums;
   const factory CreateTransactionEvent.fetchCategoriesIncome() =
       _FetchCategoriesIncome;
 }

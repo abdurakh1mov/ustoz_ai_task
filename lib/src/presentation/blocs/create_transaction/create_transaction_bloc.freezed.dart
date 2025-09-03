@@ -339,12 +339,13 @@ extension CreateTransactionEventPatterns on CreateTransactionEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _CreateTransactionEvent value)?  createTransaction,TResult Function( _FetchCategories value)?  fetchCategories,TResult Function( _FetchCategoriesIncome value)?  fetchCategoriesIncome,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _CreateTransactionEvent value)?  createTransaction,TResult Function( _FetchCategories value)?  fetchCategories,TResult Function( _ChangeOverallSums value)?  changeOverallSums,TResult Function( _FetchCategoriesIncome value)?  fetchCategoriesIncome,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _CreateTransactionEvent() when createTransaction != null:
 return createTransaction(_that);case _FetchCategories() when fetchCategories != null:
-return fetchCategories(_that);case _FetchCategoriesIncome() when fetchCategoriesIncome != null:
+return fetchCategories(_that);case _ChangeOverallSums() when changeOverallSums != null:
+return changeOverallSums(_that);case _FetchCategoriesIncome() when fetchCategoriesIncome != null:
 return fetchCategoriesIncome(_that);case _:
   return orElse();
 
@@ -363,12 +364,13 @@ return fetchCategoriesIncome(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _CreateTransactionEvent value)  createTransaction,required TResult Function( _FetchCategories value)  fetchCategories,required TResult Function( _FetchCategoriesIncome value)  fetchCategoriesIncome,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _CreateTransactionEvent value)  createTransaction,required TResult Function( _FetchCategories value)  fetchCategories,required TResult Function( _ChangeOverallSums value)  changeOverallSums,required TResult Function( _FetchCategoriesIncome value)  fetchCategoriesIncome,}){
 final _that = this;
 switch (_that) {
 case _CreateTransactionEvent():
 return createTransaction(_that);case _FetchCategories():
-return fetchCategories(_that);case _FetchCategoriesIncome():
+return fetchCategories(_that);case _ChangeOverallSums():
+return changeOverallSums(_that);case _FetchCategoriesIncome():
 return fetchCategoriesIncome(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -386,12 +388,13 @@ return fetchCategoriesIncome(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _CreateTransactionEvent value)?  createTransaction,TResult? Function( _FetchCategories value)?  fetchCategories,TResult? Function( _FetchCategoriesIncome value)?  fetchCategoriesIncome,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _CreateTransactionEvent value)?  createTransaction,TResult? Function( _FetchCategories value)?  fetchCategories,TResult? Function( _ChangeOverallSums value)?  changeOverallSums,TResult? Function( _FetchCategoriesIncome value)?  fetchCategoriesIncome,}){
 final _that = this;
 switch (_that) {
 case _CreateTransactionEvent() when createTransaction != null:
 return createTransaction(_that);case _FetchCategories() when fetchCategories != null:
-return fetchCategories(_that);case _FetchCategoriesIncome() when fetchCategoriesIncome != null:
+return fetchCategories(_that);case _ChangeOverallSums() when changeOverallSums != null:
+return changeOverallSums(_that);case _FetchCategoriesIncome() when fetchCategoriesIncome != null:
 return fetchCategoriesIncome(_that);case _:
   return null;
 
@@ -409,11 +412,12 @@ return fetchCategoriesIncome(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String amount,  String note,  DateTime date,  CategoryModel category,  bool isIncome,  bool isUsd,  BuildContext context)?  createTransaction,TResult Function()?  fetchCategories,TResult Function()?  fetchCategoriesIncome,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String amount,  String note,  DateTime date,  CategoryModel category,  bool isIncome,  bool isUsd,  BuildContext context)?  createTransaction,TResult Function()?  fetchCategories,TResult Function( bool isIncome,  int amount,  int incomes,  int expenses,  bool isUsd)?  changeOverallSums,TResult Function()?  fetchCategoriesIncome,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CreateTransactionEvent() when createTransaction != null:
 return createTransaction(_that.amount,_that.note,_that.date,_that.category,_that.isIncome,_that.isUsd,_that.context);case _FetchCategories() when fetchCategories != null:
-return fetchCategories();case _FetchCategoriesIncome() when fetchCategoriesIncome != null:
+return fetchCategories();case _ChangeOverallSums() when changeOverallSums != null:
+return changeOverallSums(_that.isIncome,_that.amount,_that.incomes,_that.expenses,_that.isUsd);case _FetchCategoriesIncome() when fetchCategoriesIncome != null:
 return fetchCategoriesIncome();case _:
   return orElse();
 
@@ -432,11 +436,12 @@ return fetchCategoriesIncome();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String amount,  String note,  DateTime date,  CategoryModel category,  bool isIncome,  bool isUsd,  BuildContext context)  createTransaction,required TResult Function()  fetchCategories,required TResult Function()  fetchCategoriesIncome,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String amount,  String note,  DateTime date,  CategoryModel category,  bool isIncome,  bool isUsd,  BuildContext context)  createTransaction,required TResult Function()  fetchCategories,required TResult Function( bool isIncome,  int amount,  int incomes,  int expenses,  bool isUsd)  changeOverallSums,required TResult Function()  fetchCategoriesIncome,}) {final _that = this;
 switch (_that) {
 case _CreateTransactionEvent():
 return createTransaction(_that.amount,_that.note,_that.date,_that.category,_that.isIncome,_that.isUsd,_that.context);case _FetchCategories():
-return fetchCategories();case _FetchCategoriesIncome():
+return fetchCategories();case _ChangeOverallSums():
+return changeOverallSums(_that.isIncome,_that.amount,_that.incomes,_that.expenses,_that.isUsd);case _FetchCategoriesIncome():
 return fetchCategoriesIncome();case _:
   throw StateError('Unexpected subclass');
 
@@ -454,11 +459,12 @@ return fetchCategoriesIncome();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String amount,  String note,  DateTime date,  CategoryModel category,  bool isIncome,  bool isUsd,  BuildContext context)?  createTransaction,TResult? Function()?  fetchCategories,TResult? Function()?  fetchCategoriesIncome,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String amount,  String note,  DateTime date,  CategoryModel category,  bool isIncome,  bool isUsd,  BuildContext context)?  createTransaction,TResult? Function()?  fetchCategories,TResult? Function( bool isIncome,  int amount,  int incomes,  int expenses,  bool isUsd)?  changeOverallSums,TResult? Function()?  fetchCategoriesIncome,}) {final _that = this;
 switch (_that) {
 case _CreateTransactionEvent() when createTransaction != null:
 return createTransaction(_that.amount,_that.note,_that.date,_that.category,_that.isIncome,_that.isUsd,_that.context);case _FetchCategories() when fetchCategories != null:
-return fetchCategories();case _FetchCategoriesIncome() when fetchCategoriesIncome != null:
+return fetchCategories();case _ChangeOverallSums() when changeOverallSums != null:
+return changeOverallSums(_that.isIncome,_that.amount,_that.incomes,_that.expenses,_that.isUsd);case _FetchCategoriesIncome() when fetchCategoriesIncome != null:
 return fetchCategoriesIncome();case _:
   return null;
 
@@ -492,12 +498,12 @@ _$CreateTransactionEventCopyWith<_CreateTransactionEvent> get copyWith => __$Cre
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CreateTransactionEvent&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.note, note) || other.note == note)&&(identical(other.date, date) || other.date == date)&&(identical(other.category, category) || other.category == category)&&(identical(other.isIncome, isIncome) || other.isIncome == isIncome)&&(identical(other.isUsd, isUsd) || other.isUsd == isUsd)&&const DeepCollectionEquality().equals(other.context, context));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CreateTransactionEvent&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.note, note) || other.note == note)&&(identical(other.date, date) || other.date == date)&&(identical(other.category, category) || other.category == category)&&(identical(other.isIncome, isIncome) || other.isIncome == isIncome)&&(identical(other.isUsd, isUsd) || other.isUsd == isUsd)&&(identical(other.context, context) || other.context == context));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,amount,note,date,category,isIncome,isUsd,const DeepCollectionEquality().hash(context));
+int get hashCode => Object.hash(runtimeType,amount,note,date,category,isIncome,isUsd,context);
 
 @override
 String toString() {
@@ -529,7 +535,7 @@ class __$CreateTransactionEventCopyWithImpl<$Res>
 
 /// Create a copy of CreateTransactionEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? amount = null,Object? note = null,Object? date = null,Object? category = null,Object? isIncome = null,Object? isUsd = null,Object? context = freezed,}) {
+@pragma('vm:prefer-inline') $Res call({Object? amount = null,Object? note = null,Object? date = null,Object? category = null,Object? isIncome = null,Object? isUsd = null,Object? context = null,}) {
   return _then(_CreateTransactionEvent(
 amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
 as String,note: null == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
@@ -537,7 +543,7 @@ as String,date: null == date ? _self.date : date // ignore: cast_nullable_to_non
 as DateTime,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as CategoryModel,isIncome: null == isIncome ? _self.isIncome : isIncome // ignore: cast_nullable_to_non_nullable
 as bool,isUsd: null == isUsd ? _self.isUsd : isUsd // ignore: cast_nullable_to_non_nullable
-as bool,context: freezed == context ? _self.context : context // ignore: cast_nullable_to_non_nullable
+as bool,context: null == context ? _self.context : context // ignore: cast_nullable_to_non_nullable
 as BuildContext,
   ));
 }
@@ -576,6 +582,80 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class _ChangeOverallSums implements CreateTransactionEvent {
+  const _ChangeOverallSums({required this.isIncome, required this.amount, required this.incomes, required this.expenses, required this.isUsd});
+  
+
+ final  bool isIncome;
+ final  int amount;
+ final  int incomes;
+ final  int expenses;
+ final  bool isUsd;
+
+/// Create a copy of CreateTransactionEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ChangeOverallSumsCopyWith<_ChangeOverallSums> get copyWith => __$ChangeOverallSumsCopyWithImpl<_ChangeOverallSums>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChangeOverallSums&&(identical(other.isIncome, isIncome) || other.isIncome == isIncome)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.incomes, incomes) || other.incomes == incomes)&&(identical(other.expenses, expenses) || other.expenses == expenses)&&(identical(other.isUsd, isUsd) || other.isUsd == isUsd));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,isIncome,amount,incomes,expenses,isUsd);
+
+@override
+String toString() {
+  return 'CreateTransactionEvent.changeOverallSums(isIncome: $isIncome, amount: $amount, incomes: $incomes, expenses: $expenses, isUsd: $isUsd)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ChangeOverallSumsCopyWith<$Res> implements $CreateTransactionEventCopyWith<$Res> {
+  factory _$ChangeOverallSumsCopyWith(_ChangeOverallSums value, $Res Function(_ChangeOverallSums) _then) = __$ChangeOverallSumsCopyWithImpl;
+@useResult
+$Res call({
+ bool isIncome, int amount, int incomes, int expenses, bool isUsd
+});
+
+
+
+
+}
+/// @nodoc
+class __$ChangeOverallSumsCopyWithImpl<$Res>
+    implements _$ChangeOverallSumsCopyWith<$Res> {
+  __$ChangeOverallSumsCopyWithImpl(this._self, this._then);
+
+  final _ChangeOverallSums _self;
+  final $Res Function(_ChangeOverallSums) _then;
+
+/// Create a copy of CreateTransactionEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? isIncome = null,Object? amount = null,Object? incomes = null,Object? expenses = null,Object? isUsd = null,}) {
+  return _then(_ChangeOverallSums(
+isIncome: null == isIncome ? _self.isIncome : isIncome // ignore: cast_nullable_to_non_nullable
+as bool,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
+as int,incomes: null == incomes ? _self.incomes : incomes // ignore: cast_nullable_to_non_nullable
+as int,expenses: null == expenses ? _self.expenses : expenses // ignore: cast_nullable_to_non_nullable
+as int,isUsd: null == isUsd ? _self.isUsd : isUsd // ignore: cast_nullable_to_non_nullable
+as bool,
+  ));
+}
+
+
+}
 
 /// @nodoc
 

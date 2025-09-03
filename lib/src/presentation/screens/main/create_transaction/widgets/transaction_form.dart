@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:ustoz_ai_task/src/component/custom_switcher.dart';
 import 'package:ustoz_ai_task/src/core/extension/widget_extension.dart';
 import 'package:ustoz_ai_task/src/core/injector/injector.dart';
 import 'package:ustoz_ai_task/src/core/theme/app_colors.dart';
@@ -26,14 +27,16 @@ class TransactionFormState extends State<TransactionForm>
   late TabController _tabController;
 
   @override
-  void initState() {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _formatter = CurrencyDetectorFormatter(isUsd: isUsd);
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(() {
       setState(() {
+        widget.onTabChanged(_tabController.index);
         selectedCategory = "Select category";
       });
     });
-    super.initState();
   }
 
   bool isUsd = false;
@@ -51,12 +54,6 @@ class TransactionFormState extends State<TransactionForm>
       "date": selectedDate,
       "category": selectedCategory,
     };
-  }
-
-  @override
-  void didChangeDependencies() {
-    _formatter = CurrencyDetectorFormatter(isUsd: isUsd);
-    super.didChangeDependencies();
   }
 
   void _toggleCurrency(bool value) {
@@ -112,28 +109,11 @@ class TransactionFormState extends State<TransactionForm>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Amount", style: textStyles.w600f14),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 20.w,
-                      height: 20.h,
-                      child: Switch(
-                        activeThumbColor: context.appColors.softBlue,
-                        activeTrackColor: context.appColors.white,
-                        inactiveThumbColor: context.appColors.silverGray,
-                        inactiveTrackColor: context.appColors.white,
-                        trackOutlineColor: WidgetStateProperty.all(
-                          context.appColors.white,
-                        ),
-                        value: isUsd,
-                        onChanged: (newValue) {
-                          _toggleCurrency(newValue);
-                        },
-                      ),
-                    ),
-                    20.w.horizontalSpace,
-                    Text("USD", style: textStyles.w500f12),
-                  ],
+                CustomSwitcher(
+                  onToggle: (value) {
+                    isUsd = value;
+                    _toggleCurrency(value);
+                  },
                 ),
               ],
             ),

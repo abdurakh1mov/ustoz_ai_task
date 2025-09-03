@@ -31,11 +31,10 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       useInheritedMediaQuery: true,
-      designSize: const Size(375, 812),
+      designSize: const Size(402, 812),
       builder: (context, child) {
         return MaterialApp.router(
           scaffoldMessengerKey: rootScaffoldMessengerKey,
-          builder: _applyMediaQuery,
           debugShowCheckedModeBanner: false,
           routerConfig: AppRouter.appRouter,
           localizationsDelegates: localizationsDelegates,
@@ -58,12 +57,4 @@ class _MyAppState extends State<MyApp> {
     inputDecorationTheme: null,
     extensions: <ThemeExtension<dynamic>>[AppTextStyles.light, AppColors.light],
   );
-
-  Widget _applyMediaQuery(BuildContext context, Widget? child) {
-    final mq = MediaQuery.of(context);
-    return MediaQuery(
-      data: mq.copyWith(textScaler: const TextScaler.linear(1.0)),
-      child: child!,
-    );
-  }
 }

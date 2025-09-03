@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -7,12 +6,12 @@ import 'package:ustoz_ai_task/src/core/injector/injector.dart';
 import 'package:ustoz_ai_task/src/domain/repository_interface/auth_repository_interface.dart';
 
 part 'login_state.dart';
-part 'login_bloc.freezed.dart';
+part 'login_cubit.freezed.dart';
 
 @injectable
-class LoginBloc extends Cubit<LoginState> {
+class LoginCubit extends Cubit<LoginState> {
   final AuthRepositoryInterface _authRepository;
-  LoginBloc({required AuthRepositoryInterface authRepository})
+  LoginCubit({required AuthRepositoryInterface authRepository})
     : _authRepository = authRepository,
       super(const _LoginState());
 

@@ -5,9 +5,19 @@ import 'package:ustoz_ai_task/src/core/extension/widget_extension.dart';
 import 'package:ustoz_ai_task/src/core/theme/app_colors.dart';
 import 'package:ustoz_ai_task/src/core/theme/app_typography.dart';
 
-class HomeAppBar extends StatelessWidget {
-  const HomeAppBar({super.key});
+import '../../../../../component/custom_switcher.dart';
+import '../../../../../core/utils/formatters.dart';
 
+class HomeAppBar extends StatelessWidget {
+  const HomeAppBar({
+    super.key,
+    required this.onToggle,
+    required this.incomes,
+    required this.expenses,
+  });
+  final void Function(bool isUsd) onToggle;
+  final int incomes;
+  final int expenses;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -16,7 +26,19 @@ class HomeAppBar extends StatelessWidget {
           children: [
             Text("Home", style: context.textStyles.w700f18),
             const Spacer(),
-            IconButton(icon: Assets.icons.filter.svg(), onPressed: () {}),
+            Row(
+              children: [
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: CustomSwitcher(
+                    onToggle: (value) {
+                      onToggle(value);
+                    },
+                  ),
+                ).padding(EdgeInsets.only(right: 12.w)),
+                IconButton(icon: Assets.icons.filter.svg(), onPressed: () {}),
+              ],
+            ),
           ],
         ).padding(EdgeInsets.symmetric(horizontal: 16.w)),
         Divider(color: context.appColors.silverGray, height: 1.h),
@@ -25,17 +47,21 @@ class HomeAppBar extends StatelessWidget {
           children: [
             _build(
               title: "Доход",
-              subtitle: "12 000 000",
+              subtitle: formatToKMLN(incomes),
               context: context,
               subtitleColor: context.appColors.softBlue,
             ),
             _build(
               title: "Расход",
-              subtitle: "9 000 000",
+              subtitle: formatToKMLN(expenses),
               subtitleColor: context.appColors.red,
               context: context,
             ),
-            _build(title: "Баланс", subtitle: "3 000 000", context: context),
+            _build(
+              title: "Баланс",
+              subtitle: formatToKMLN(incomes - expenses),
+              context: context,
+            ),
           ],
         ),
         8.h.verticalSpace,

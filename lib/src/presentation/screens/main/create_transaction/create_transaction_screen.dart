@@ -76,6 +76,7 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                         } else if (note.isEmpty) {
                           showAppSnackBar("Please enter note");
                         } else {
+                          // printLog("fmsakmfka $index");
                           context.read<CreateTransactionBloc>().add(
                             CreateTransactionEvent.createTransaction(
                               context: context,

@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ustoz_ai_task/src/core/extension/localisation_extension.dart';
+import 'package:ustoz_ai_task/src/core/injector/injector.dart';
 import 'package:ustoz_ai_task/src/core/theme/app_colors.dart';
 import 'package:ustoz_ai_task/src/core/theme/app_typography.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/main/home/home_screen.dart';
@@ -16,7 +17,8 @@ import '../../../../generated/assets.gen.dart';
 import '../../../component/animation_button_effect.dart';
 import '../../../component/screen.dart';
 import '../../../core/navigator/router_names.dart';
-import '../../blocs/main/main_bloc.dart';
+import '../../../domain/repository_interface/main_repository_interface.dart';
+import '../../blocs/home/home_cubit.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -27,7 +29,20 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
-  final _screens = const [HomeScreen(), StatisticsScreen(), ProfileScreen()];
+  List<Widget> screens = [
+    BlocProvider(
+      create: (context) {
+        final bloc = HomeCubit(repository: getIt<MainRepositoryInterface>());
+        bloc.fetchUserTransactions();
+        bloc.fetchRate();
+        bloc.fetchUserData();
+        return bloc;
+      },
+      child: HomeScreen(),
+    ),
+    StatisticsScreen(),
+    ProfileScreen(),
+  ];
 
   void _onTabTapped(int index) {
     setState(() {
@@ -37,52 +52,42 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MainBloc, MainState>(
-      builder: (context, state) {
-        return Screen(
-          body: SafeArea(
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: IndexedStack(
-                    index: _selectedIndex,
-                    children: _screens,
-                  ),
-                ),
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: _bottomNavigationBar(context),
-                ),
-                Positioned(
-                  right: 16.w,
-                  bottom: 100.h,
-                  child: AnimationButtonEffect(
-                    disabled: false,
-                    onTap: () {
-                      context.pushNamed(
-                        RouterNames.createTransaction,
-                        extra: state.categories,
-                      );
-                    },
-                    isLoading: false,
-                    child: Container(
-                      height: 56.h,
-                      width: 56.h,
-                      decoration: BoxDecoration(
-                        color: context.appColors.softBlue,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(Icons.add, color: context.appColors.white),
-                    ),
-                  ),
-                ),
-              ],
+    return Screen(
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: IndexedStack(index: _selectedIndex, children: screens),
             ),
-          ),
-        );
-      },
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: _bottomNavigationBar(context),
+            ),
+            Positioned(
+              right: 16.w,
+              bottom: 100.h,
+              child: AnimationButtonEffect(
+                disabled: false,
+                onTap: () {
+                  context.pushNamed(RouterNames.createTransaction);
+                },
+                isLoading: false,
+                child: Container(
+                  height: 56.h,
+                  width: 56.h,
+                  decoration: BoxDecoration(
+                    color: context.appColors.softBlue,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(Icons.add, color: context.appColors.white),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
