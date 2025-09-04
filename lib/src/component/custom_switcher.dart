@@ -4,14 +4,20 @@ import 'package:ustoz_ai_task/src/core/theme/app_colors.dart';
 import 'package:ustoz_ai_task/src/core/theme/app_typography.dart';
 
 class CustomSwitcher extends StatefulWidget {
-  const CustomSwitcher({super.key, required this.onToggle});
+  const CustomSwitcher({super.key, required this.onToggle, this.initialValue});
   final void Function(bool isUsd) onToggle;
+  final bool? initialValue;
   @override
   State<CustomSwitcher> createState() => _CustomSwitcherState();
 }
 
 class _CustomSwitcherState extends State<CustomSwitcher> {
   bool isUsd = false;
+  @override
+  void initState() {
+    super.initState();
+    isUsd = widget.initialValue ?? false;
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -5,6 +5,7 @@ abstract class CreateTransactionState with _$CreateTransactionState {
   const factory CreateTransactionState({
     @Default(false) bool isLoading,
     @Default(false) bool isCreatingLoading,
+    @Default(false) bool isDeletingLoading,
     @Default(false) bool isSuccess,
     String? errorMessage,
     @Default([]) List<CategoryModel> categories,

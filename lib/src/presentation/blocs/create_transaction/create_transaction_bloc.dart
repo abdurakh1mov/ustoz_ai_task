@@ -9,6 +9,7 @@ import 'package:ustoz_ai_task/src/presentation/blocs/home/home_cubit.dart';
 
 import '../../../core/constants/global_keys.dart';
 import '../../../data/model/category_model.dart';
+import '../../../data/model/transaction_model.dart';
 
 part 'create_transaction_state.dart';
 part 'create_transaction_event.dart';
@@ -25,7 +26,11 @@ class CreateTransactionBloc
     on<_CreateTransactionEvent>(_addTransaction);
     on<_FetchCategoriesIncome>(_fetchCategoriesIncome);
     on<_ChangeOverallSums>(_changeOverallSums);
+    on<_ChangeTransaction>(_changeTransaction);
+    on<_DeleteTransaction>(_deleteTransaction);
   }
+
+  final uid = DbService().uid;
 
   Future<void> _fetchCategories(
     _FetchCategories event,
@@ -57,9 +62,27 @@ class CreateTransactionBloc
     Emitter<CreateTransactionState> emit,
   ) async {
     try {
+      final homeContextBloc = GlobalKeys.homeScaffoldKey.currentContext
+          ?.read<HomeCubit>();
       int newIncomes = 0;
       int newExpenses = 0;
-      if (!event.isUsd) {
+      final rate = double.parse(
+        (GlobalKeys.homeScaffoldKey.currentContext
+                    ?.read<HomeCubit>()
+                    .state
+                    .rate
+                    ?.rate ??
+                0)
+            .toString(),
+      );
+      if (event.isDeleting) {
+        newIncomes = event.isIncome
+            ? event.incomes - event.amount
+            : event.incomes;
+        newExpenses = !event.isIncome
+            ? event.expenses - event.amount
+            : event.expenses;
+      } else if (!event.isUsd) {
         newIncomes = event.isIncome
             ? event.incomes + event.amount
             : event.incomes;
@@ -68,37 +91,14 @@ class CreateTransactionBloc
             : event.expenses;
       } else {
         newIncomes = event.isIncome
-            ? ((event.amount *
-                          double.parse(
-                            (GlobalKeys.homeScaffoldKey.currentContext
-                                        ?.read<HomeCubit>()
-                                        .state
-                                        .rate
-                                        ?.rate ??
-                                    0)
-                                .toString(),
-                          ))
-                      .toInt() +
-                  event.incomes)
+            ? ((event.amount * rate).toInt() + event.incomes)
             : event.incomes;
-        printLog("newIncomes: $newIncomes");
         newExpenses = !event.isIncome
-            ? ((event.amount *
-                          double.parse(
-                            (GlobalKeys.homeScaffoldKey.currentContext
-                                        ?.read<HomeCubit>()
-                                        .state
-                                        .rate
-                                        ?.rate ??
-                                    0)
-                                .toString(),
-                          ))
-                      .toInt() +
-                  event.expenses)
+            ? ((event.amount * rate).toInt() + event.expenses)
             : event.expenses;
-        printLog("newExpenses: $newExpenses newIncomes: $newIncomes");
       }
-      final uid = DbService().uid;
+      homeContextBloc?.fetchUserTransactions();
+      homeContextBloc?.fetchUserData();
       _repository.calculateOverall(
         uid: uid.toString(),
         income: newIncomes,
@@ -109,39 +109,86 @@ class CreateTransactionBloc
     }
   }
 
+  Future<void> _deleteTransaction(
+    _DeleteTransaction event,
+    Emitter<CreateTransactionState> emit,
+  ) async {
+    try {
+      emit(state.copyWith(isDeletingLoading: true));
+      await _repository.deleteTransaction(
+        transactionId: event.transaction.id,
+        uid: uid ?? "",
+      );
+      final homeContextBloc = GlobalKeys.homeScaffoldKey.currentContext
+          ?.read<HomeCubit>();
+      add(
+        CreateTransactionEvent.changeOverallSums(
+          isUsd: event.transaction.isUsd,
+          isDeleting: true,
+          isIncome: event.transaction.income,
+          amount: event.transaction.amount.replaceAll(",", "") == ""
+              ? 0
+              : int.parse(event.transaction.amount.replaceAll(",", "")),
+          incomes: homeContextBloc?.state.userData?.income ?? 0,
+          expenses: homeContextBloc?.state.userData?.expense ?? 0,
+        ),
+      );
+
+      GlobalKeys.homeScaffoldKey.currentContext
+          ?.read<HomeCubit>()
+          .deleteTransaction(transactionId: event.transaction.id);
+      emit(state.copyWith(isDeletingLoading: false));
+      // ignore: use_build_context_synchronously
+      Navigator.pop(event.context);
+    } catch (e) {
+      printLog(e.toString());
+    }
+  }
+
+  Future<void> _changeTransaction(
+    _ChangeTransaction event,
+    Emitter<CreateTransactionState> emit,
+  ) async {
+    emit(state.copyWith(isCreatingLoading: true));
+    try {
+      await _repository.changeTransaction(
+        transaction: event.transaction,
+        uid: uid ?? "",
+      );
+      GlobalKeys.homeScaffoldKey.currentContext
+          ?.read<HomeCubit>()
+          .changeTransaction(transaction: event.transaction);
+      emit(state.copyWith(isCreatingLoading: false));
+      // ignore: use_build_context_synchronously
+      Navigator.pop(event.context);
+    } catch (e) {
+      printLog(e.toString());
+    }
+  }
+
   Future<void> _addTransaction(
     _CreateTransactionEvent event,
     Emitter<CreateTransactionState> emit,
   ) async {
-    final uid = DbService().uid;
     try {
       emit(state.copyWith(isCreatingLoading: true));
+
       await _repository.addTransaction(
-        isIncome: event.isIncome,
-        note: event.note,
-        amount: event.amount.replaceAll(event.isUsd ? "USD" : "UZS", ""),
-        date: event.date,
-        isUsd: event.isUsd,
-        category: event.category.title,
+        transaction: event.transaction,
         uid: uid.toString(),
       );
+
       final homeContextBloc = GlobalKeys.homeScaffoldKey.currentContext
           ?.read<HomeCubit>();
-
-      homeContextBloc?.fetchUserTransactions();
-      homeContextBloc?.fetchUserData();
       emit(state.copyWith(isSuccess: true, isCreatingLoading: false));
       showAppSnackBar("Transaction added successfully");
       Future.microtask(() {
         add(
           CreateTransactionEvent.changeOverallSums(
-            isUsd: event.isUsd,
-            isIncome: event.isIncome,
-            amount: int.parse(
-              event.amount
-                  .replaceAll(",", "")
-                  .replaceAll(event.isUsd ? "USD" : "UZS", ""),
-            ),
+            isUsd: event.transaction.isUsd,
+            isDeleting: false,
+            isIncome: event.transaction.income,
+            amount: int.parse(event.transaction.amount.replaceAll(",", "")),
             incomes: homeContextBloc?.state.userData?.income ?? 0,
             expenses: homeContextBloc?.state.userData?.expense ?? 0,
           ),

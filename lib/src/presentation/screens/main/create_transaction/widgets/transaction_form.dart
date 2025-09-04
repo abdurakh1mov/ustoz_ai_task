@@ -9,6 +9,7 @@ import 'package:ustoz_ai_task/src/core/injector/injector.dart';
 import 'package:ustoz_ai_task/src/core/theme/app_colors.dart';
 import 'package:ustoz_ai_task/src/core/theme/app_typography.dart';
 import 'package:ustoz_ai_task/src/core/utils/formatters.dart';
+import 'package:ustoz_ai_task/src/data/model/transaction_model.dart';
 import 'package:ustoz_ai_task/src/presentation/blocs/create_transaction/create_transaction_bloc.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/main/create_transaction/widgets/category_bottom_sheet.dart';
 
@@ -16,8 +17,15 @@ import '../../../../../component/category_with_border.dart';
 import '../../../../../component/transaction_text_field.dart';
 
 class TransactionForm extends StatefulWidget {
-  const TransactionForm({super.key, required this.onTabChanged});
+  const TransactionForm({
+    super.key,
+    required this.onTabChanged,
+    this.transaction,
+    required this.isEditable,
+  });
   final void Function(int index) onTabChanged;
+  final TransactionModel? transaction;
+  final bool isEditable;
   @override
   State<TransactionForm> createState() => TransactionFormState();
 }
@@ -27,10 +35,26 @@ class TransactionFormState extends State<TransactionForm>
   late TabController _tabController;
 
   @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+    if (widget.isEditable) {
+      _tabController.index = widget.transaction?.income == true ? 0 : 1;
+      isUsd = widget.transaction?.isUsd ?? false;
+      noteController.text = widget.transaction?.note ?? "";
+      amountController.text =
+          "${widget.transaction?.amount} ${isUsd ? "USD" : "UZS"}";
+      selectedDate =
+          DateTime.tryParse(widget.transaction?.createdAt ?? "") ??
+          DateTime.now();
+      selectedCategory = widget.transaction?.category ?? "Select category";
+    }
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _formatter = CurrencyDetectorFormatter(isUsd: isUsd);
-    _tabController = TabController(length: 2, vsync: this);
+    formatter = CurrencyDetectorFormatter(isUsd: isUsd);
     _tabController.addListener(() {
       setState(() {
         widget.onTabChanged(_tabController.index);
@@ -41,7 +65,7 @@ class TransactionFormState extends State<TransactionForm>
 
   bool isUsd = false;
   DateTime selectedDate = DateTime.now();
-  late CurrencyDetectorFormatter _formatter;
+  late CurrencyDetectorFormatter formatter;
   String selectedCategory = "Select category";
   final TextEditingController noteController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
@@ -59,9 +83,9 @@ class TransactionFormState extends State<TransactionForm>
   void _toggleCurrency(bool value) {
     setState(() {
       isUsd = value;
-      _formatter = CurrencyDetectorFormatter(isUsd: isUsd);
+      formatter = CurrencyDetectorFormatter(isUsd: isUsd);
       final oldText = amountController.text;
-      amountController.value = _formatter.formatEditUpdate(
+      amountController.value = formatter.formatEditUpdate(
         const TextEditingValue(text: ""),
         TextEditingValue(text: oldText),
       );
@@ -110,6 +134,7 @@ class TransactionFormState extends State<TransactionForm>
               children: [
                 Text("Amount", style: textStyles.w600f14),
                 CustomSwitcher(
+                  initialValue: isUsd,
                   onToggle: (value) {
                     isUsd = value;
                     _toggleCurrency(value);
@@ -120,7 +145,7 @@ class TransactionFormState extends State<TransactionForm>
             8.h.verticalSpace,
             TransactionTextField(
               onChanged: (value) {},
-              formatter: [_formatter],
+              formatter: [formatter],
               controller: amountController,
             ),
             12.h.verticalSpace,

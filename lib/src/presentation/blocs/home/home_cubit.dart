@@ -34,6 +34,46 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
+  Future<void> changeTransaction({
+    required TransactionModel transaction,
+  }) async {
+    try {
+      final transactions = List<TransactionModel?>.from(state.userTransactions);
+
+      final index = transactions.indexWhere((t) => t?.id == transaction.id);
+
+      if (index == -1) {
+        printLog("Transaction not found in list");
+        return;
+      }
+      transactions[index] = transaction;
+
+      emit(state.copyWith(userTransactions: transactions));
+      printLog("Transaction updated successfully");
+    } catch (e) {
+      printLog("Error changing transaction: $e");
+    }
+  }
+
+  Future<void> deleteTransaction({required String transactionId}) async {
+    try {
+      final transactions = List<TransactionModel?>.from(state.userTransactions);
+
+      final index = transactions.indexWhere((t) => t?.id == transactionId);
+
+      if (index == -1) {
+        printLog("Transaction not found in list");
+        return;
+      }
+      transactions.removeAt(index);
+
+      emit(state.copyWith(userTransactions: transactions));
+      printLog("Transaction deleted successfully");
+    } catch (e) {
+      printLog("Error deleting transaction: $e");
+    }
+  }
+
   Future<void> fetchUserData() async {
     try {
       final uid = DbService().uid;

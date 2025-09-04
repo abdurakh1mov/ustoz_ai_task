@@ -8,6 +8,8 @@ import 'package:ustoz_ai_task/src/presentation/blocs/home/home_cubit.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/main/home/widgets/home_app_bar.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/main/home/widgets/transaction_item.dart';
 
+import '../../../../data/model/transaction_model.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -48,17 +50,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           return TransactionItem(
                             rated: rated,
                             rate: state.rate?.rate ?? "1",
-                            note: state.userTransactions[index]?.note ?? "",
-                            isIncome:
-                                state.userTransactions[index]?.income ?? false,
-                            category:
-                                state.userTransactions[index]?.category ?? "",
-                            date:
-                                state.userTransactions[index]?.createdAt ?? "",
-                            amount:
-                                state.userTransactions[index]?.amount ?? "0",
-                            isUsd:
-                                state.userTransactions[index]?.isUsd ?? false,
+                            transaction:
+                                state.userTransactions[index] ??
+                                TransactionModel(),
                           );
                         },
                       ),

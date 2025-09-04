@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import 'package:intl/intl.dart';
 import 'package:ustoz_ai_task/src/core/injector/injector.dart';
 import 'package:ustoz_ai_task/src/data/model/category_model.dart';
 import 'package:ustoz_ai_task/src/data/model/rate_model.dart';
@@ -25,13 +24,8 @@ class MainRepositoryImpl implements MainRepositoryInterface {
 
   @override
   Future<void> addTransaction({
-    required String note,
-    required String amount,
-    required DateTime date,
-    required String category,
+    required TransactionModel transaction,
     required String uid,
-    required bool isUsd,
-    required bool isIncome,
   }) async {
     final expenseRef = _instance
         .collection('users')
@@ -41,12 +35,12 @@ class MainRepositoryImpl implements MainRepositoryInterface {
 
     final expense = {
       'id': expenseRef.id,
-      'amount': amount,
-      'category': category,
-      'note': note,
-      'createdAt': DateFormat('yyyy-MM-dd HH:mm').format(date),
-      'isUsd': isUsd,
-      'income': isIncome,
+      'amount': transaction.amount,
+      'category': transaction.category,
+      'note': transaction.note,
+      'createdAt': transaction.createdAt,
+      'isUsd': transaction.isUsd,
+      'income': transaction.income,
     };
 
     await expenseRef.set(expense);
@@ -112,5 +106,47 @@ class MainRepositoryImpl implements MainRepositoryInterface {
         throw Exception('User not found');
       }
     });
+  }
+
+  @override
+  Future<void> deleteTransaction({
+    required String uid,
+    required String transactionId,
+  }) async {
+    try {
+      await _instance
+          .collection('users')
+          .doc(uid)
+          .collection('expenses')
+          .doc(transactionId)
+          .delete();
+
+      printLog("Transaction deleted: $transactionId");
+    } catch (e) {
+      printLog("Error deleting transaction: $e");
+    }
+  }
+
+  @override
+  Future<void> changeTransaction({
+    required TransactionModel transaction,
+    required String uid,
+  }) {
+    final docRef = _instance
+        .collection('users')
+        .doc(uid)
+        .collection('expenses')
+        .doc(transaction.id);
+    final expense = {
+      'id': transaction.id,
+      'amount': transaction.amount,
+      'category': transaction.category,
+      'note': transaction.note,
+      'createdAt': transaction.createdAt,
+      'isUsd': transaction.isUsd,
+      'income': transaction.income,
+    };
+
+    return docRef.update(expense);
   }
 }

@@ -11,7 +11,7 @@ class PrimaryButton extends StatelessWidget {
     this.isDisabled = false,
     this.title,
     this.titleColor = const Color(0xffFFFFFF),
-    this.backgroundColor = const Color(0xff1D1D1D),
+    this.backgroundColor,
     this.borderWidth = 0.5,
     this.verticalPadding = 12,
     this.isLoading,
@@ -40,7 +40,11 @@ class PrimaryButton extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.r),
-          color: isDisabled ? color.silverGray : color.softBlue,
+          color: (isDisabled)
+              ? color.silverGray
+              : (backgroundColor == null)
+              ? color.softBlue
+              : backgroundColor,
           boxShadow: isDisabled
               ? null
               : [

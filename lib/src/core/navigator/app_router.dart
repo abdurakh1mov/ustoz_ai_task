@@ -14,6 +14,7 @@ import 'package:ustoz_ai_task/src/presentation/screens/main/main_screen.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/main/profile/profile_screen.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/main/statistics/statistics_screen.dart';
 import 'package:ustoz_ai_task/src/splash_screen.dart';
+import '../../data/model/transaction_model.dart';
 import '../../presentation/blocs/sign_up/sign_up_cubit.dart';
 import '../injector/injector.dart';
 
@@ -81,6 +82,16 @@ class AppRouter {
             path: RouterNames.createTransaction,
             name: RouterNames.createTransaction,
             builder: (context, state) {
+              final extras = state.extra;
+              final isEditable =
+                  (extras is Map<String, dynamic> &&
+                      extras['isEditable'] is bool)
+                  ? extras['isEditable'] as bool
+                  : false;
+
+              final transaction = (isEditable)
+                  ? extras['transaction'] as TransactionModel?
+                  : null;
               return BlocProvider(
                 create: (context) =>
                     CreateTransactionBloc(
@@ -90,7 +101,10 @@ class AppRouter {
                       ..add(
                         const CreateTransactionEvent.fetchCategoriesIncome(),
                       ),
-                child: CreateTransactionScreen(),
+                child: CreateTransactionScreen(
+                  isEditable: isEditable,
+                  transaction: transaction,
+                ),
               );
             },
           ),

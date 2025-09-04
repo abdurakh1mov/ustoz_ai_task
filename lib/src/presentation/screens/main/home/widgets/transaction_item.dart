@@ -1,27 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:ustoz_ai_task/src/core/injector/injector.dart';
 import 'package:ustoz_ai_task/src/core/theme/app_colors.dart';
 import 'package:ustoz_ai_task/src/core/theme/app_typography.dart';
+import 'package:ustoz_ai_task/src/data/model/transaction_model.dart';
+
+import '../../../../../core/navigator/router_names.dart';
 
 class TransactionItem extends StatefulWidget {
   const TransactionItem({
     super.key,
-    required this.isIncome,
-    required this.category,
-    required this.date,
-    required this.amount,
-    required this.isUsd,
-    required this.note,
+    required this.transaction,
     required this.rate,
     required this.rated,
   });
-  final bool isIncome;
-  final String category;
-  final String date;
-  final String amount;
-  final bool isUsd;
-  final String note;
+  final TransactionModel transaction;
   final String rate;
   final bool rated;
 
@@ -38,25 +31,42 @@ class _TransactionItemState extends State<TransactionItem> {
       children: [
         ListTile(
           onTap: () {
-            printLog("fskmafkmaskmfa tapped");
+            context.pushNamed(
+              RouterNames.createTransaction,
+              extra: {
+                "isEditable": true,
+                "transaction": TransactionModel(
+                  (b) => b
+                    ..id = widget.transaction.id
+                    ..amount = widget.transaction.amount
+                    ..category = widget.transaction.category
+                    ..createdAt = widget.transaction.createdAt
+                    ..income = widget.transaction.income
+                    ..isUsd = widget.transaction.isUsd
+                    ..note = widget.transaction.note,
+                ),
+              },
+            );
           },
           leading: CircleAvatar(
             radius: 25,
             backgroundColor: appColors.white,
             child: Icon(
-              widget.isIncome
+              widget.transaction.income
                   ? Icons.arrow_circle_down_rounded
                   : Icons.arrow_circle_up_rounded,
-              color: widget.isIncome ? appColors.softBlue : appColors.red,
+              color: widget.transaction.income
+                  ? appColors.softBlue
+                  : appColors.red,
               size: 30,
             ),
           ),
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(widget.category, style: textStyles.w500f14),
+              Text(widget.transaction.category, style: textStyles.w500f14),
               Text(
-                widget.note,
+                widget.transaction.note,
                 style: textStyles.w500f12,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -64,20 +74,22 @@ class _TransactionItemState extends State<TransactionItem> {
             ],
           ),
           subtitle: Text(
-            widget.date,
+            widget.transaction.createdAt,
             style: textStyles.w400f12.copyWith(color: appColors.gray),
           ),
           trailing: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                "${widget.isIncome ? "+" : "-"} ${widget.amount} ${widget.isUsd ? "\$" : "SO'M"}",
+                "${widget.transaction.income ? "+" : "-"} ${widget.transaction.amount} ${widget.transaction.isUsd ? "\$" : "SO'M"}",
                 style: textStyles.w500f12.copyWith(
-                  color: widget.isIncome ? appColors.softBlue : appColors.red,
+                  color: widget.transaction.income
+                      ? appColors.softBlue
+                      : appColors.red,
                 ),
               ),
               Text(
-                _calculateUzs(widget.amount, widget.rate),
+                _calculateUzs(widget.transaction.amount, widget.rate),
                 style: textStyles.w500f12.copyWith(
                   color: context.appColors.gray,
                 ),
@@ -96,13 +108,13 @@ class _TransactionItemState extends State<TransactionItem> {
     var usd = false;
     double value;
 
-    if (widget.isUsd && widget.rated) {
+    if (widget.transaction.isUsd && widget.rated) {
       usd = true;
       value = parsedAmount;
-    } else if (!widget.isUsd && widget.rated) {
+    } else if (!widget.transaction.isUsd && widget.rated) {
       usd = true;
       value = parsedAmount / parsedRate;
-    } else if (widget.isUsd && !widget.rated) {
+    } else if (widget.transaction.isUsd && !widget.rated) {
       usd = false;
       value = parsedAmount * parsedRate;
     } else {
