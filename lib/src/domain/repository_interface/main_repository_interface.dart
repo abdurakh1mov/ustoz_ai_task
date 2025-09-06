@@ -4,17 +4,26 @@ import 'package:ustoz_ai_task/src/data/model/transaction_model.dart';
 import 'package:ustoz_ai_task/src/data/model/user_model.dart';
 
 abstract interface class MainRepositoryInterface {
+  Future<UserModel> getUserData({required String uid});
   Future<List<CategoryModel>> getCategories();
   Future<List<CategoryModel>> getCategoriesIncome();
   Future<void> changeTransaction({
     required TransactionModel transaction,
     required String uid,
   });
+  Future<void> logout();
   Future<RateModel> getRate();
   Future<void> calculateOverall({
     required String uid,
     required int income,
     required int expense,
+  });
+  Future<List<TransactionModel>> getFilteredTransactions({
+    required String uid,
+    DateTime? startDate,
+    DateTime? endDate,
+    String? category,
+    bool? income,
   });
   Future<void> deleteTransaction({
     required String transactionId,

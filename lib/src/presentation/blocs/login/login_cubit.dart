@@ -39,6 +39,19 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
+  Future<void> resetPassword({required String email}) async {
+    emit(state.copyWith(isResetLoading: true, errorMessage: ""));
+    try {
+      await _authRepository.resetPassword(email: email);
+      emit(state.copyWith(isResetLoading: false));
+      showAppSnackBar("Password reset email sent!");
+    } catch (e) {
+      emit(state.copyWith(isResetLoading: false));
+      showAppSnackBar("Failed to send password reset email.");
+      printLog(e.toString());
+    }
+  }
+
   Future<void> signInWithGoogle() async {
     try {
       emit(state.copyWith(isLoading: true, errorMessage: ""));

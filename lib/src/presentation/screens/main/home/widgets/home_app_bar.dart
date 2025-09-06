@@ -14,10 +14,12 @@ class HomeAppBar extends StatelessWidget {
     required this.onToggle,
     required this.incomes,
     required this.expenses,
+    required this.filterOnTap,
   });
   final void Function(bool isUsd) onToggle;
   final int incomes;
   final int expenses;
+  final void Function() filterOnTap;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -36,7 +38,12 @@ class HomeAppBar extends StatelessWidget {
                     },
                   ),
                 ).padding(EdgeInsets.only(right: 12.w)),
-                IconButton(icon: Assets.icons.filter.svg(), onPressed: () {}),
+                IconButton(
+                  icon: Assets.icons.filter.svg(),
+                  onPressed: () {
+                    filterOnTap();
+                  },
+                ),
               ],
             ),
           ],
@@ -46,19 +53,19 @@ class HomeAppBar extends StatelessWidget {
         Row(
           children: [
             _build(
-              title: "Доход",
+              title: "Income",
               subtitle: formatToKMLN(incomes),
               context: context,
               subtitleColor: context.appColors.softBlue,
             ),
             _build(
-              title: "Расход",
+              title: "Expense",
               subtitle: formatToKMLN(expenses),
               subtitleColor: context.appColors.red,
               context: context,
             ),
             _build(
-              title: "Баланс",
+              title: "Balance",
               subtitle: formatToKMLN(incomes - expenses),
               context: context,
             ),

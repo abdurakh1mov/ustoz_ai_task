@@ -38,7 +38,7 @@ class _$TransactionModelSerializer
       'createdAt',
       serializers.serialize(
         object.createdAt,
-        specifiedType: const FullType(String),
+        specifiedType: const FullType(Timestamp),
       ),
       'income',
       serializers.serialize(object.income, specifiedType: const FullType(bool)),
@@ -93,9 +93,9 @@ class _$TransactionModelSerializer
           result.createdAt =
               serializers.deserialize(
                     value,
-                    specifiedType: const FullType(String),
+                    specifiedType: const FullType(Timestamp),
                   )!
-                  as String;
+                  as Timestamp;
           break;
         case 'income':
           result.income =
@@ -136,7 +136,7 @@ class _$TransactionModel extends TransactionModel {
   @override
   final String category;
   @override
-  final String createdAt;
+  final Timestamp createdAt;
   @override
   final bool income;
   @override
@@ -222,9 +222,9 @@ class TransactionModelBuilder
   String? get category => _$this._category;
   set category(String? category) => _$this._category = category;
 
-  String? _createdAt;
-  String? get createdAt => _$this._createdAt;
-  set createdAt(String? createdAt) => _$this._createdAt = createdAt;
+  Timestamp? _createdAt;
+  Timestamp? get createdAt => _$this._createdAt;
+  set createdAt(Timestamp? createdAt) => _$this._createdAt = createdAt;
 
   bool? _income;
   bool? get income => _$this._income;

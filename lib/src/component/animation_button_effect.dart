@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ustoz_ai_task/src/core/theme/app_colors.dart';
 
 // ignore: must_be_immutable
@@ -76,25 +77,7 @@ class _AnimationButtonEffectState extends State<AnimationButtonEffect>
         onPointerUp: (_) {
           _controllerA!.forward(from: 1.0);
         },
-        child: Transform.scale(
-          scale: squareScaleA,
-          child: Stack(
-            children: [
-              widget.child,
-              widget.isLoading
-                  ? Positioned(
-                      top: 0,
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      child: CircularProgressIndicator.adaptive(
-                        backgroundColor: context.appColors.white,
-                      ),
-                    )
-                  : const SizedBox(),
-            ],
-          ),
-        ),
+        child: Transform.scale(scale: squareScaleA, child: widget.child),
       ),
     );
   }

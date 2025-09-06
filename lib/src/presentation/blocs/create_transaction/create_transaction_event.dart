@@ -8,6 +8,7 @@ abstract class CreateTransactionEvent with _$CreateTransactionEvent {
   }) = _CreateTransactionEvent;
 
   const factory CreateTransactionEvent.changeTransaction({
+    required int oldAmount,
     required TransactionModel transaction,
     required BuildContext context,
   }) = _ChangeTransaction;
@@ -22,10 +23,10 @@ abstract class CreateTransactionEvent with _$CreateTransactionEvent {
     required bool isIncome,
     required int amount,
     required int incomes,
+    required int oldAmount,
     required int expenses,
+    required bool isChanging,
     required bool isUsd,
     required bool isDeleting,
   }) = _ChangeOverallSums;
-  const factory CreateTransactionEvent.fetchCategoriesIncome() =
-      _FetchCategoriesIncome;
 }

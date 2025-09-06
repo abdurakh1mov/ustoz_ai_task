@@ -22,9 +22,8 @@ class CreateTransactionBloc
   CreateTransactionBloc({required MainRepositoryInterface repository})
     : _repository = repository,
       super(const _CreateTransactionState()) {
-    on<_FetchCategories>(_fetchCategories);
     on<_CreateTransactionEvent>(_addTransaction);
-    on<_FetchCategoriesIncome>(_fetchCategoriesIncome);
+    on<_FetchCategories>(_fetchCategories);
     on<_ChangeOverallSums>(_changeOverallSums);
     on<_ChangeTransaction>(_changeTransaction);
     on<_DeleteTransaction>(_deleteTransaction);
@@ -39,21 +38,22 @@ class CreateTransactionBloc
     emit(state.copyWith(isLoading: true));
     try {
       final categories = await _repository.getCategories();
-      emit(state.copyWith(categories: categories));
+      List<CategoryModel> incomeCategories = categories
+          .where((category) => category.isIncome)
+          .toList();
+      List<CategoryModel> expenseCategories = categories
+          .where((category) => !category.isIncome)
+          .toList();
+      emit(
+        state.copyWith(
+          categories: expenseCategories,
+          isLoading: false,
+          categoriesIncome: incomeCategories,
+        ),
+      );
+      printLog("Categories: bloc ${state.categories.length}");
     } catch (e) {
-      emit(state.copyWith(isLoading: false));
-    }
-  }
-
-  Future<void> _fetchCategoriesIncome(
-    _FetchCategoriesIncome event,
-    Emitter<CreateTransactionState> emit,
-  ) async {
-    try {
-      final categories = await _repository.getCategoriesIncome();
-      emit(state.copyWith(categoriesIncome: categories, isLoading: false));
-    } catch (e) {
-      emit(state.copyWith(isLoading: false));
+      emit(state.copyWith(isLoading: false, errorMessage: e.toString()));
     }
   }
 
@@ -81,6 +81,43 @@ class CreateTransactionBloc
             : event.incomes;
         newExpenses = !event.isIncome
             ? event.expenses - event.amount
+            : event.expenses;
+      } else if (event.isChanging) {
+        printLog("fasmkfkamskfmksamk 0");
+        if (event.isUsd) {
+          if (event.isIncome) {
+            printLog("fasmkfkamskfmksamk 2");
+            newIncomes =
+                event.incomes -
+                ((event.oldAmount * rate).toInt()) +
+                ((event.amount * rate).toInt());
+            newExpenses = event.expenses;
+          } else {
+            newExpenses =
+                event.expenses -
+                ((event.oldAmount * rate).toInt()) +
+                ((event.amount * rate).toInt());
+            newIncomes = event.incomes;
+          }
+        } else {
+          if (event.isIncome) {
+            printLog("fasmkfkamskfmksamk 1");
+            printLog(
+              "fksamfkmaksf ${event.oldAmount} ${event.amount} ${event.incomes}",
+            );
+            newIncomes = event.incomes - event.oldAmount + event.amount;
+            newExpenses = event.expenses;
+          } else {
+            newExpenses = event.expenses - event.oldAmount + event.amount;
+            newIncomes = event.incomes;
+          }
+        }
+      } else if (event.isUsd) {
+        newIncomes = event.isIncome
+            ? ((event.amount * rate).toInt() + event.incomes)
+            : event.incomes;
+        newExpenses = !event.isIncome
+            ? ((event.amount * rate).toInt() + event.expenses)
             : event.expenses;
       } else if (!event.isUsd) {
         newIncomes = event.isIncome
@@ -123,6 +160,8 @@ class CreateTransactionBloc
           ?.read<HomeCubit>();
       add(
         CreateTransactionEvent.changeOverallSums(
+          oldAmount: 0,
+          isChanging: false,
           isUsd: event.transaction.isUsd,
           isDeleting: true,
           isIncome: event.transaction.income,
@@ -158,6 +197,33 @@ class CreateTransactionBloc
       GlobalKeys.homeScaffoldKey.currentContext
           ?.read<HomeCubit>()
           .changeTransaction(transaction: event.transaction);
+
+      add(
+        CreateTransactionEvent.changeOverallSums(
+          oldAmount: event.oldAmount,
+          isChanging: true,
+          isUsd: event.transaction.isUsd,
+          isDeleting: false,
+          isIncome: event.transaction.income,
+          amount: event.transaction.amount.replaceAll(",", "") == ""
+              ? 0
+              : int.parse(event.transaction.amount.replaceAll(",", "")),
+          incomes:
+              GlobalKeys.homeScaffoldKey.currentContext
+                  ?.read<HomeCubit>()
+                  .state
+                  .userData
+                  ?.income ??
+              0,
+          expenses:
+              GlobalKeys.homeScaffoldKey.currentContext
+                  ?.read<HomeCubit>()
+                  .state
+                  .userData
+                  ?.expense ??
+              0,
+        ),
+      );
       emit(state.copyWith(isCreatingLoading: false));
       // ignore: use_build_context_synchronously
       Navigator.pop(event.context);
@@ -185,6 +251,8 @@ class CreateTransactionBloc
       Future.microtask(() {
         add(
           CreateTransactionEvent.changeOverallSums(
+            oldAmount: 0,
+            isChanging: false,
             isUsd: event.transaction.isUsd,
             isDeleting: false,
             isIncome: event.transaction.income,

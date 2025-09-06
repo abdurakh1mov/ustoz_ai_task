@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:container_tab_indicator/container_tab_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:ustoz_ai_task/src/component/custom_switcher.dart';
+import 'package:ustoz_ai_task/src/component/simple_bottom_sheet.dart';
 import 'package:ustoz_ai_task/src/core/extension/widget_extension.dart';
 import 'package:ustoz_ai_task/src/core/injector/injector.dart';
 import 'package:ustoz_ai_task/src/core/theme/app_colors.dart';
@@ -11,7 +13,6 @@ import 'package:ustoz_ai_task/src/core/theme/app_typography.dart';
 import 'package:ustoz_ai_task/src/core/utils/formatters.dart';
 import 'package:ustoz_ai_task/src/data/model/transaction_model.dart';
 import 'package:ustoz_ai_task/src/presentation/blocs/create_transaction/create_transaction_bloc.dart';
-import 'package:ustoz_ai_task/src/presentation/screens/main/create_transaction/widgets/category_bottom_sheet.dart';
 
 import '../../../../../component/category_with_border.dart';
 import '../../../../../component/transaction_text_field.dart';
@@ -45,8 +46,7 @@ class TransactionFormState extends State<TransactionForm>
       amountController.text =
           "${widget.transaction?.amount} ${isUsd ? "USD" : "UZS"}";
       selectedDate =
-          DateTime.tryParse(widget.transaction?.createdAt ?? "") ??
-          DateTime.now();
+          (widget.transaction?.createdAt)?.toDate() ?? Timestamp.now().toDate();
       selectedCategory = widget.transaction?.category ?? "Select category";
     }
   }
@@ -144,24 +144,24 @@ class TransactionFormState extends State<TransactionForm>
             ),
             8.h.verticalSpace,
             TransactionTextField(
-              onChanged: (value) {},
               formatter: [formatter],
               controller: amountController,
             ),
             12.h.verticalSpace,
-            Text("Category", style: textStyles.w600f14),
-            8.h.verticalSpace,
             CategoryWithBorder(
-              title: selectedCategory,
+              title: "Category",
+              value: selectedCategory,
               onTap: () {
                 showModalBottomSheet(
                   context: context,
+                  backgroundColor: Colors.transparent,
                   constraints: BoxConstraints(maxHeight: 0.6.sh),
                   builder: (contextBottomSheet) {
-                    return CategoryBottomSheet(
-                      categories: _tabController.index == 0
-                          ? state.categoriesIncome
-                          : state.categories,
+                    return SimpleBottomSheet(
+                      title: "Categories",
+                      list: _tabController.index == 0
+                          ? state.categoriesIncome.map((e) => e.title).toList()
+                          : state.categories.map((e) => e.title).toList(),
                       onTap: (category) {
                         setState(() {
                           selectedCategory = category;
@@ -177,14 +177,12 @@ class TransactionFormState extends State<TransactionForm>
             8.h.verticalSpace,
             TransactionTextField(
               controller: noteController,
-              onChanged: (value) {},
               inputType: TextInputType.text,
             ),
             12.h.verticalSpace,
-            Text("Date", style: textStyles.w600f14),
-            8.h.verticalSpace,
             CategoryWithBorder(
-              title: DateFormat("d MMMM yyyy").format(selectedDate),
+              title: "Date",
+              value: DateFormat("d MMMM yyyy").format(selectedDate),
               onTap: () => _pickDate(context),
             ),
           ],

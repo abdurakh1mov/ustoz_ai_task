@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$LoginState {
 
- bool get isLoading; bool get isSuccess; String get errorMessage; String get successMessage;
+ bool get isLoading; bool get isResetLoading; bool get isSuccess; String get errorMessage; String get successMessage;
 /// Create a copy of LoginState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $LoginStateCopyWith<LoginState> get copyWith => _$LoginStateCopyWithImpl<LoginSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoginState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isSuccess, isSuccess) || other.isSuccess == isSuccess)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.successMessage, successMessage) || other.successMessage == successMessage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoginState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isResetLoading, isResetLoading) || other.isResetLoading == isResetLoading)&&(identical(other.isSuccess, isSuccess) || other.isSuccess == isSuccess)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.successMessage, successMessage) || other.successMessage == successMessage));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isLoading,isSuccess,errorMessage,successMessage);
+int get hashCode => Object.hash(runtimeType,isLoading,isResetLoading,isSuccess,errorMessage,successMessage);
 
 @override
 String toString() {
-  return 'LoginState(isLoading: $isLoading, isSuccess: $isSuccess, errorMessage: $errorMessage, successMessage: $successMessage)';
+  return 'LoginState(isLoading: $isLoading, isResetLoading: $isResetLoading, isSuccess: $isSuccess, errorMessage: $errorMessage, successMessage: $successMessage)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $LoginStateCopyWith<$Res>  {
   factory $LoginStateCopyWith(LoginState value, $Res Function(LoginState) _then) = _$LoginStateCopyWithImpl;
 @useResult
 $Res call({
- bool isLoading, bool isSuccess, String errorMessage, String successMessage
+ bool isLoading, bool isResetLoading, bool isSuccess, String errorMessage, String successMessage
 });
 
 
@@ -62,9 +62,10 @@ class _$LoginStateCopyWithImpl<$Res>
 
 /// Create a copy of LoginState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? isLoading = null,Object? isSuccess = null,Object? errorMessage = null,Object? successMessage = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? isLoading = null,Object? isResetLoading = null,Object? isSuccess = null,Object? errorMessage = null,Object? successMessage = null,}) {
   return _then(_self.copyWith(
 isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as bool,isResetLoading: null == isResetLoading ? _self.isResetLoading : isResetLoading // ignore: cast_nullable_to_non_nullable
 as bool,isSuccess: null == isSuccess ? _self.isSuccess : isSuccess // ignore: cast_nullable_to_non_nullable
 as bool,errorMessage: null == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String,successMessage: null == successMessage ? _self.successMessage : successMessage // ignore: cast_nullable_to_non_nullable
@@ -153,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isLoading,  bool isSuccess,  String errorMessage,  String successMessage)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isLoading,  bool isResetLoading,  bool isSuccess,  String errorMessage,  String successMessage)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _LoginState() when $default != null:
-return $default(_that.isLoading,_that.isSuccess,_that.errorMessage,_that.successMessage);case _:
+return $default(_that.isLoading,_that.isResetLoading,_that.isSuccess,_that.errorMessage,_that.successMessage);case _:
   return orElse();
 
 }
@@ -174,10 +175,10 @@ return $default(_that.isLoading,_that.isSuccess,_that.errorMessage,_that.success
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isLoading,  bool isSuccess,  String errorMessage,  String successMessage)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isLoading,  bool isResetLoading,  bool isSuccess,  String errorMessage,  String successMessage)  $default,) {final _that = this;
 switch (_that) {
 case _LoginState():
-return $default(_that.isLoading,_that.isSuccess,_that.errorMessage,_that.successMessage);case _:
+return $default(_that.isLoading,_that.isResetLoading,_that.isSuccess,_that.errorMessage,_that.successMessage);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -194,10 +195,10 @@ return $default(_that.isLoading,_that.isSuccess,_that.errorMessage,_that.success
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isLoading,  bool isSuccess,  String errorMessage,  String successMessage)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isLoading,  bool isResetLoading,  bool isSuccess,  String errorMessage,  String successMessage)?  $default,) {final _that = this;
 switch (_that) {
 case _LoginState() when $default != null:
-return $default(_that.isLoading,_that.isSuccess,_that.errorMessage,_that.successMessage);case _:
+return $default(_that.isLoading,_that.isResetLoading,_that.isSuccess,_that.errorMessage,_that.successMessage);case _:
   return null;
 
 }
@@ -209,10 +210,11 @@ return $default(_that.isLoading,_that.isSuccess,_that.errorMessage,_that.success
 
 
 class _LoginState implements LoginState {
-  const _LoginState({this.isLoading = false, this.isSuccess = false, this.errorMessage = '', this.successMessage = ''});
+  const _LoginState({this.isLoading = false, this.isResetLoading = false, this.isSuccess = false, this.errorMessage = '', this.successMessage = ''});
   
 
 @override@JsonKey() final  bool isLoading;
+@override@JsonKey() final  bool isResetLoading;
 @override@JsonKey() final  bool isSuccess;
 @override@JsonKey() final  String errorMessage;
 @override@JsonKey() final  String successMessage;
@@ -227,16 +229,16 @@ _$LoginStateCopyWith<_LoginState> get copyWith => __$LoginStateCopyWithImpl<_Log
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoginState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isSuccess, isSuccess) || other.isSuccess == isSuccess)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.successMessage, successMessage) || other.successMessage == successMessage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoginState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isResetLoading, isResetLoading) || other.isResetLoading == isResetLoading)&&(identical(other.isSuccess, isSuccess) || other.isSuccess == isSuccess)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.successMessage, successMessage) || other.successMessage == successMessage));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isLoading,isSuccess,errorMessage,successMessage);
+int get hashCode => Object.hash(runtimeType,isLoading,isResetLoading,isSuccess,errorMessage,successMessage);
 
 @override
 String toString() {
-  return 'LoginState(isLoading: $isLoading, isSuccess: $isSuccess, errorMessage: $errorMessage, successMessage: $successMessage)';
+  return 'LoginState(isLoading: $isLoading, isResetLoading: $isResetLoading, isSuccess: $isSuccess, errorMessage: $errorMessage, successMessage: $successMessage)';
 }
 
 
@@ -247,7 +249,7 @@ abstract mixin class _$LoginStateCopyWith<$Res> implements $LoginStateCopyWith<$
   factory _$LoginStateCopyWith(_LoginState value, $Res Function(_LoginState) _then) = __$LoginStateCopyWithImpl;
 @override @useResult
 $Res call({
- bool isLoading, bool isSuccess, String errorMessage, String successMessage
+ bool isLoading, bool isResetLoading, bool isSuccess, String errorMessage, String successMessage
 });
 
 
@@ -264,9 +266,10 @@ class __$LoginStateCopyWithImpl<$Res>
 
 /// Create a copy of LoginState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? isLoading = null,Object? isSuccess = null,Object? errorMessage = null,Object? successMessage = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? isLoading = null,Object? isResetLoading = null,Object? isSuccess = null,Object? errorMessage = null,Object? successMessage = null,}) {
   return _then(_LoginState(
 isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as bool,isResetLoading: null == isResetLoading ? _self.isResetLoading : isResetLoading // ignore: cast_nullable_to_non_nullable
 as bool,isSuccess: null == isSuccess ? _self.isSuccess : isSuccess // ignore: cast_nullable_to_non_nullable
 as bool,errorMessage: null == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String,successMessage: null == successMessage ? _self.successMessage : successMessage // ignore: cast_nullable_to_non_nullable

@@ -104,7 +104,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             isDisabled:
                                 _emailController.text.isEmpty ||
                                 _passwordController.text.isEmpty,
-                            title: context.tr.login.toUpperCase(),
+                            title: context.tr.sign_up.toUpperCase(),
                             onPressed: () {
                               if (_emailController.text.isEmpty ||
                                   _passwordController.text.isEmpty) {

@@ -45,7 +45,9 @@ class Screen extends StatelessWidget {
               ),
             ),
           ),
-          Positioned.fill(child: body),
+          Positioned.fill(
+            child: Material(color: Colors.transparent, child: body),
+          ),
         ],
       ),
     );

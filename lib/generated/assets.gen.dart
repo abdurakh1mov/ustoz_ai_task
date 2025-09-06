@@ -26,6 +26,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/home.svg
   SvgGenImage get home => const SvgGenImage('assets/icons/home.svg');
 
+  /// File path: assets/icons/logout.svg
+  SvgGenImage get logout => const SvgGenImage('assets/icons/logout.svg');
+
   /// File path: assets/icons/profile.svg
   SvgGenImage get profile => const SvgGenImage('assets/icons/profile.svg');
 
@@ -33,7 +36,7 @@ class $AssetsIconsGen {
   SvgGenImage get save => const SvgGenImage('assets/icons/save.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values => [filter, google, home, profile, save];
+  List<SvgGenImage> get values => [filter, google, home, logout, profile, save];
 }
 
 class Assets {

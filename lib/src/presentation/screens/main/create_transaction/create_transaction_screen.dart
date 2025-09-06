@@ -1,7 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:ustoz_ai_task/src/component/primary_button.dart';
 import 'package:ustoz_ai_task/src/component/screen.dart';
 import 'package:ustoz_ai_task/src/component/warning_dialog.dart';
@@ -34,7 +34,6 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<CreateTransactionBloc, CreateTransactionState>(
       builder: (context, state) {
-        printLog("faskmfmaksmfk ${widget.transaction?.id}");
         return Screen(
           body: state.isLoading
               ? Center(
@@ -130,15 +129,27 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                                     )
                                     ..category = category
                                     ..note = note
-                                    ..createdAt = DateFormat(
-                                      'yyyy-MM-dd HH:mm',
-                                    ).format(date)
+                                    ..createdAt = Timestamp.fromDate(date)
                                     ..isUsd = isUsd
                                     ..income = index == 0,
                                 );
 
                             bloc.add(
                               CreateTransactionEvent.changeTransaction(
+                                oldAmount:
+                                    widget.transaction?.amount.replaceAll(
+                                          ",",
+                                          "",
+                                        ) ==
+                                        ""
+                                    ? 0
+                                    : int.parse(
+                                        widget.transaction?.amount.replaceAll(
+                                              ",",
+                                              "",
+                                            ) ??
+                                            "0",
+                                      ),
                                 transaction: transaction,
                                 context: context,
                               ),
@@ -154,9 +165,7 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                                     )
                                     ..category = category
                                     ..note = note
-                                    ..createdAt = DateFormat(
-                                      'yyyy-MM-dd HH:mm',
-                                    ).format(date)
+                                    ..createdAt = Timestamp.fromDate(date)
                                     ..isUsd = isUsd
                                     ..income = index == 0,
                                 );

@@ -4,6 +4,7 @@ part of 'login_cubit.dart';
 abstract class LoginState with _$LoginState {
   const factory LoginState({
     @Default(false) bool isLoading,
+    @Default(false) bool isResetLoading,
     @Default(false) bool isSuccess,
     @Default('') String errorMessage,
     @Default('') String successMessage,

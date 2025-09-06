@@ -62,6 +62,13 @@ class PrimaryButton extends StatelessWidget {
           ),
           child: title == null
               ? Icon(icon)
+              : (isLoading ?? false)
+              ? Align(
+                  alignment: Alignment.center,
+                  child: CircularProgressIndicator.adaptive(
+                    backgroundColor: context.appColors.white,
+                  ),
+                )
               : Text(
                   (isLoading ?? false) ? "" : (title ?? ''),
                   textAlign: TextAlign.center,

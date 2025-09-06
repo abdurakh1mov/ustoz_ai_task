@@ -7,13 +7,11 @@ import 'package:ustoz_ai_task/src/core/theme/app_typography.dart';
 class TransactionTextField extends StatefulWidget {
   const TransactionTextField({
     super.key,
-    required this.onChanged,
     this.inputType,
     this.formatter,
     required this.controller,
   });
   final List<TextInputFormatter>? formatter;
-  final void Function(String) onChanged;
   final TextInputType? inputType;
   final TextEditingController controller;
   @override
@@ -31,7 +29,6 @@ class _TransactionTextFieldState extends State<TransactionTextField> {
       keyboardType: widget.inputType ?? TextInputType.number,
       style: textStyles.w500f12,
       autocorrect: false,
-      onChanged: widget.onChanged,
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),

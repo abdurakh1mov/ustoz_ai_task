@@ -6,11 +6,14 @@ import 'package:ustoz_ai_task/src/domain/repository_interface/auth_repository_in
 import 'package:ustoz_ai_task/src/domain/repository_interface/main_repository_interface.dart';
 import 'package:ustoz_ai_task/src/presentation/blocs/create_transaction/create_transaction_bloc.dart';
 import 'package:ustoz_ai_task/src/presentation/blocs/login/login_cubit.dart';
+import 'package:ustoz_ai_task/src/presentation/blocs/profile/profile_cubit.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/auth/login/login_screen.dart';
+import 'package:ustoz_ai_task/src/presentation/screens/auth/login/reset_password_screen.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/auth/sign_up/sign_up_screen.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/main/home/home_screen.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/main/create_transaction/create_transaction_screen.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/main/main_screen.dart';
+import 'package:ustoz_ai_task/src/presentation/screens/main/profile/edit_profile_screen.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/main/profile/profile_screen.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/main/statistics/statistics_screen.dart';
 import 'package:ustoz_ai_task/src/splash_screen.dart';
@@ -48,6 +51,25 @@ class AppRouter {
               );
             },
           ),
+          GoRoute(
+            path: RouterNames.resetPassword,
+            name: RouterNames.resetPassword,
+            builder: (context, state) {
+              final extras = state.extra;
+              BuildContext? context;
+              if (extras is Map<String, dynamic>) {
+                context =
+                    (state.extra != null && state.extra is Map<String, dynamic>)
+                    ? (state.extra as Map<String, dynamic>)["context"]
+                          as BuildContext
+                    : null;
+              }
+              return BlocProvider.value(
+                value: context!.read<LoginCubit>(),
+                child: ResetPasswordScreen(),
+              );
+            },
+          ),
         ],
       ),
       GoRoute(
@@ -77,6 +99,28 @@ class AppRouter {
             builder: (context, state) {
               return const ProfileScreen();
             },
+            routes: [
+              GoRoute(
+                path: RouterNames.editProfile,
+                name: RouterNames.editProfile,
+                builder: (contextRouter, state) {
+                  final extras = state.extra;
+                  BuildContext? context;
+                  if (extras is Map<String, dynamic>) {
+                    context =
+                        (state.extra != null &&
+                            state.extra is Map<String, dynamic>)
+                        ? (state.extra as Map<String, dynamic>)["context"]
+                              as BuildContext
+                        : null;
+                  }
+                  return BlocProvider.value(
+                    value: context!.read<ProfileCubit>(),
+                    child: const EditProfileScreen(),
+                  );
+                },
+              ),
+            ],
           ),
           GoRoute(
             path: RouterNames.createTransaction,
@@ -93,14 +137,9 @@ class AppRouter {
                   ? extras['transaction'] as TransactionModel?
                   : null;
               return BlocProvider(
-                create: (context) =>
-                    CreateTransactionBloc(
-                        repository: getIt<MainRepositoryInterface>(),
-                      )
-                      ..add(const CreateTransactionEvent.fetchCategories())
-                      ..add(
-                        const CreateTransactionEvent.fetchCategoriesIncome(),
-                      ),
+                create: (context) => CreateTransactionBloc(
+                  repository: getIt<MainRepositoryInterface>(),
+                )..add(const CreateTransactionEvent.fetchCategories()),
                 child: CreateTransactionScreen(
                   isEditable: isEditable,
                   transaction: transaction,

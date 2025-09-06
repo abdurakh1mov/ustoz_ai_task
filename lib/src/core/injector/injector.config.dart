@@ -26,6 +26,8 @@ import 'package:ustoz_ai_task/src/presentation/blocs/home/home_cubit.dart'
     as _i712;
 import 'package:ustoz_ai_task/src/presentation/blocs/login/login_cubit.dart'
     as _i655;
+import 'package:ustoz_ai_task/src/presentation/blocs/profile/profile_cubit.dart'
+    as _i249;
 import 'package:ustoz_ai_task/src/presentation/blocs/sign_up/sign_up_cubit.dart'
     as _i372;
 
@@ -54,6 +56,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i953.CreateTransactionBloc(
         repository: gh<_i343.MainRepositoryInterface>(),
       ),
+    );
+    gh.factory<_i249.ProfileCubit>(
+      () => _i249.ProfileCubit(repository: gh<_i343.MainRepositoryInterface>()),
     );
     return this;
   }

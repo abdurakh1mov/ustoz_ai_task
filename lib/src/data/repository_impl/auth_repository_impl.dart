@@ -26,11 +26,6 @@ class AuthRepositoryImpl implements AuthRepositoryInterface {
   }
 
   @override
-  Future<void> signOut() async {
-    await _firebaseAuth.signOut();
-  }
-
-  @override
   Future<User?> registerWithEmailAndPassword(
     String email,
     String password,
@@ -38,7 +33,18 @@ class AuthRepositoryImpl implements AuthRepositoryInterface {
     try {
       UserCredential userCredential = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
-      return userCredential.user;
+      final User? user = userCredential.user;
+      final userDoc = FirebaseFirestore.instance.collection('users').add({
+        'income': 0,
+        'expense': 0,
+        'uid': user?.uid ?? "",
+        'name': "Not set",
+        'email': user?.email ?? '',
+        'photoURL': user?.photoURL ?? '',
+        'provider': 'with email',
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+      return userDoc.then((value) => user);
     } on FirebaseAuthException catch (e) {
       throw Exception('Failed to register: ${e.message}');
     }
@@ -106,12 +112,25 @@ class AuthRepositoryImpl implements AuthRepositoryInterface {
       throw Exception('Failed to sign in with Google: $error');
     }
   }
+
+  @override
+  Future<void> resetPassword({required String email}) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      throw Exception('Failed to send password reset email: ${e.message}');
+    }
+  }
 }
 
 class GoogleSignInService {
   static final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
   static Future<UserCredential?> signInWithGoogle() async {
     try {
+      _googleSignIn.initialize(
+        serverClientId:
+            "452215614779-hu72obqeuuqu9ngmv7ige11c5338hiek.apps.googleusercontent.com",
+      );
       final GoogleSignInAccount googleUser = await _googleSignIn.authenticate();
       final idToken = googleUser.authentication.idToken;
       final authorizationClient = googleUser.authorizationClient;

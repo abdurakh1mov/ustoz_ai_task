@@ -9,6 +9,7 @@ import 'package:ustoz_ai_task/src/core/extension/localisation_extension.dart';
 import 'package:ustoz_ai_task/src/core/injector/injector.dart';
 import 'package:ustoz_ai_task/src/core/theme/app_colors.dart';
 import 'package:ustoz_ai_task/src/core/theme/app_typography.dart';
+import 'package:ustoz_ai_task/src/presentation/blocs/profile/profile_cubit.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/main/home/home_screen.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/main/profile/profile_screen.dart';
 import 'package:ustoz_ai_task/src/presentation/screens/main/statistics/statistics_screen.dart';
@@ -36,12 +37,23 @@ class _MainScreenState extends State<MainScreen> {
         bloc.fetchUserTransactions();
         bloc.fetchRate();
         bloc.fetchUserData();
+        bloc.fetchCategories();
+        bloc.fetchCategoriesIncome();
         return bloc;
       },
       child: HomeScreen(),
     ),
     StatisticsScreen(),
-    ProfileScreen(),
+    BlocProvider(
+      create: (context) {
+        final cubit = ProfileCubit(
+          repository: getIt<MainRepositoryInterface>(),
+        );
+        cubit.fetchUserData();
+        return cubit;
+      },
+      child: ProfileScreen(),
+    ),
   ];
 
   void _onTabTapped(int index) {

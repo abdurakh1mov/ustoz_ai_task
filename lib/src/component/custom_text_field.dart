@@ -48,6 +48,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
         // focusColor: ,
         hintText: widget.hintText,
+        hintStyle: context.textStyles.w500f12.copyWith(
+          color: decorationColorWithAlpha(context: context, alpha: .7),
+        ),
         filled: true,
         fillColor: isFocused
             ? Color(0x0C182903)

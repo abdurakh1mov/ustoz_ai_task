@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:ustoz_ai_task/src/core/theme/app_colors.dart';
@@ -74,7 +75,7 @@ class _TransactionItemState extends State<TransactionItem> {
             ],
           ),
           subtitle: Text(
-            widget.transaction.createdAt,
+            DateFormat().format(widget.transaction.createdAt.toDate()),
             style: textStyles.w400f12.copyWith(color: appColors.gray),
           ),
           trailing: Column(
@@ -97,7 +98,7 @@ class _TransactionItemState extends State<TransactionItem> {
             ],
           ),
         ),
-        Divider(),
+        Divider(height: 1.h, color: appColors.silverGray, thickness: 1.h),
       ],
     );
   }

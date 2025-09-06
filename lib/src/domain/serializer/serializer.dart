@@ -9,4 +9,7 @@ part "serializer.g.dart";
   TransactionModel,
 ])
 final Serializers serializers =
-    (_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();
+    (_$serializers.toBuilder()
+          ..add(TimestampSerializer())
+          ..addPlugin(StandardJsonPlugin()))
+        .build();

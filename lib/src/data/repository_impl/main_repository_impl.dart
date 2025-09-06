@@ -65,9 +65,56 @@ class MainRepositoryImpl implements MainRepositoryInterface {
         .collection('expenses')
         // .orderBy('createdAt', descending: true)
         .get();
-    printLog("User Transactions: ${snapshot.docs.length}");
     return snapshot.docs
         .map((doc) => TransactionModel.fromJson(doc.data()))
+        .toList();
+  }
+
+  @override
+  Future<List<TransactionModel>> getFilteredTransactions({
+    String? category,
+    required String uid,
+    DateTime? startDate,
+    DateTime? endDate,
+    bool? income,
+  }) async {
+    Query query = _instance.collection("users").doc(uid).collection("expenses");
+    if (startDate != null) {
+      query = query.where(
+        "createdAt",
+        isGreaterThanOrEqualTo: Timestamp.fromDate(startDate),
+      );
+    }
+    if (endDate != null) {
+      query = query.where(
+        "createdAt",
+        isLessThanOrEqualTo: Timestamp.fromDate(endDate),
+      );
+    }
+    if (income != null) {
+      query = query.where("income", isEqualTo: income);
+    }
+    if (category != null && category != "All") {
+      query = query.where("category", isEqualTo: category);
+    }
+    printLog("Query: $category");
+    final snapshot = await query.get();
+    // final snapshot = await _instance
+    //     .collection("users")
+    //     .doc(uid)
+    //     .collection("expenses")
+    //     .where("income", isEqualTo: false) // only income
+    //     .get();
+
+    print("Docs with income=true: ${snapshot.docs.length}");
+
+    printLog("Filtered transactions impl: ${snapshot.docs.length}");
+
+    return snapshot.docs
+        .map(
+          (doc) =>
+              TransactionModel.fromJson(doc.data() as Map<String, dynamic>),
+        )
         .toList();
   }
 
@@ -148,5 +195,22 @@ class MainRepositoryImpl implements MainRepositoryInterface {
     };
 
     return docRef.update(expense);
+  }
+
+  @override
+  Future<UserModel> getUserData({required String uid}) {
+    final userDoc = _instance.collection('users').doc(uid);
+    return userDoc.get().then((doc) {
+      if (doc.exists) {
+        return UserModel.fromJson(doc.data()!);
+      } else {
+        throw Exception('User not found');
+      }
+    });
+  }
+
+  @override
+  Future<void> logout() {
+    return FirebaseFirestore.instance.terminate();
   }
 }

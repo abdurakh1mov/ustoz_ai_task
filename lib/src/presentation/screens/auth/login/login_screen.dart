@@ -84,6 +84,36 @@ class _LoginScreenState extends State<LoginScreen> {
                             hintText: context.tr.email,
                           ),
                           16.h.verticalSpace,
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Material(
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(8),
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(8),
+                                onTap: () {
+                                  context.pushNamed(
+                                    RouterNames.resetPassword,
+                                    extra: {"context": context},
+                                  );
+                                },
+                                child:
+                                    Text(
+                                      context.tr.reset_password,
+                                      style: context.textStyles.w500f12
+                                          .copyWith(
+                                            color: context.appColors.primary,
+                                          ),
+                                    ).padding(
+                                      EdgeInsets.symmetric(
+                                        horizontal: 4.w,
+                                        vertical: 2.h,
+                                      ),
+                                    ),
+                              ),
+                            ),
+                          ),
+                          4.h.verticalSpace,
                           CustomPasswordTextField(
                             controller: _passwordController,
                             focusNode: _focusNodePassword,

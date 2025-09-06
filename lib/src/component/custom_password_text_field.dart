@@ -60,6 +60,9 @@ class _CustomPasswordTextFieldState extends State<CustomPasswordTextField> {
             });
           },
         ),
+        hintStyle: context.textStyles.w500f12.copyWith(
+          color: decorationColorWithAlpha(context: context, alpha: .7),
+        ),
         hintText: widget.hintText,
         filled: true,
         fillColor: isFocused
